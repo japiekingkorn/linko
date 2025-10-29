@@ -23,7 +23,7 @@
 
         .container {
             background: rgba(255, 255, 255, 0.5);
-            padding: 12px;
+            padding: 10px;
             border-radius: 15px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
             max-width: 360px;
@@ -126,21 +126,24 @@
         .game-info {
             display: flex;
             justify-content: space-around;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             gap: 6px;
         }
 
         .info-box {
             background: rgba(255, 255, 255, 0.95);
-            padding: 6px 10px;
+            padding: 4px 8px;
             border-radius: 6px;
             flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
         }
 
         .info-label {
             font-size: 0.7em;
             color: #666;
-            margin-bottom: 2px;
         }
 
         .info-value {
@@ -151,16 +154,16 @@
 
         .timer {
             color: #01beb8;
-            font-size: 1.6em !important;
+            font-size: 1.4em !important;
         }
 
         .category-box {
             background: linear-gradient(135deg, #01beb8 0%, #02153f 100%);
             color: white;
-            padding: 8px;
+            padding: 6px;
             border-radius: 6px;
-            margin-bottom: 8px;
-            font-size: 0.9em;
+            margin-bottom: 6px;
+            font-size: 0.85em;
             font-weight: bold;
             transition: transform 0.3s ease;
         }
@@ -176,22 +179,22 @@
 
         .word-display {
             background: rgba(255, 255, 255, 0.95);
-            padding: 10px;
+            padding: 8px;
             border-radius: 6px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             border: 2px solid #01beb8;
         }
 
         .current-word {
-            font-size: 1.4em;
+            font-size: 1.3em;
             font-weight: bold;
             color: #01beb8;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
 
         .instruction {
             color: #666;
-            font-size: 0.8em;
+            font-size: 0.75em;
         }
 
         .next-letter {
@@ -202,11 +205,11 @@
 
         input[type="text"] {
             width: 100%;
-            padding: 8px;
-            font-size: 0.95em;
+            padding: 7px;
+            font-size: 0.9em;
             border: 2px solid #ddd;
             border-radius: 6px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             text-align: center;
             transition: border-color 0.3s;
             background: rgba(255, 255, 255, 0.95);
@@ -239,15 +242,15 @@
         }
 
         .used-words {
-            margin-top: 10px;
-            padding-top: 8px;
+            margin-top: 8px;
+            padding-top: 6px;
             border-top: 2px solid #eee;
         }
 
         .used-words h3 {
             color: #666;
-            margin-bottom: 6px;
-            font-size: 0.85em;
+            margin-bottom: 5px;
+            font-size: 0.8em;
         }
 
         .word-list {
@@ -298,10 +301,10 @@
         .joker-message {
             background: linear-gradient(135deg, #fbd809 0%, #f39c12 100%);
             color: #02153f;
-            padding: 8px;
+            padding: 6px;
             border-radius: 6px;
-            margin-bottom: 8px;
-            font-size: 0.95em;
+            margin-bottom: 6px;
+            font-size: 0.85em;
             font-weight: bold;
             animation: jokerPulse 0.6s ease;
         }
@@ -315,7 +318,30 @@
 <body>
     <!-- Splash Screen -->
     <div id="splashScreen">
-        <img src="icon1024.png" alt="Linko Logo">
+        <svg width="200" height="200" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+            <!-- Recreated Linko logo -->
+            <rect width="1024" height="1024" rx="200" fill="#02153f"/>
+            
+            <!-- Decorative lines around -->
+            <line x1="200" y1="250" x2="300" y2="150" stroke="#01beb8" stroke-width="40" stroke-linecap="round"/>
+            <line x1="350" y1="225" x2="380" y2="180" stroke="#01beb8" stroke-width="30" stroke-linecap="round"/>
+            <line x1="700" y1="250" x2="800" y2="150" stroke="#01beb8" stroke-width="40" stroke-linecap="round"/>
+            <line x1="625" y1="225" x2="655" y2="180" stroke="#01beb8" stroke-width="30" stroke-linecap="round"/>
+            
+            <line x1="200" y1="750" x2="300" y2="850" stroke="#01beb8" stroke-width="40" stroke-linecap="round"/>
+            <line x1="350" y1="775" x2="380" y2="820" stroke="#01beb8" stroke-width="30" stroke-linecap="round"/>
+            <line x1="700" y1="750" x2="800" y2="850" stroke="#01beb8" stroke-width="40" stroke-linecap="round"/>
+            <line x1="625" y1="775" x2="655" y2="820" stroke="#01beb8" stroke-width="30" stroke-linecap="round"/>
+            
+            <!-- Letter L -->
+            <path d="M 180 300 L 180 650 L 300 650 L 300 580 L 250 580 L 250 300 Z" fill="#01beb8"/>
+            
+            <!-- Lightning bolt (yellow) -->
+            <path d="M 512 200 L 430 500 L 480 500 L 400 800 L 560 475 L 510 475 Z" fill="#fbd809"/>
+            
+            <!-- Letter O -->
+            <ellipse cx="700" cy="475" rx="120" ry="175" fill="none" stroke="#01beb8" stroke-width="70"/>
+        </svg>
     </div>
 
     <div class="container">
@@ -337,15 +363,13 @@
 
         <!-- Game Screen -->
         <div id="gameScreen" class="hidden">
-            <h1>⚡ Linko</h1>
-            
             <div class="game-info">
                 <div class="info-box">
-                    <div class="info-label">Beurt</div>
+                    <div class="info-label">Beurt:</div>
                     <div class="info-value" id="turnCounter">0</div>
                 </div>
                 <div class="info-box">
-                    <div class="info-label">Tijd</div>
+                    <div class="info-label">Tijd:</div>
                     <div class="info-value timer" id="timer">45</div>
                 </div>
             </div>
@@ -367,7 +391,6 @@
 
             <input type="text" id="wordInput" placeholder="Type je woord..." autocomplete="off">
             <div class="error" id="errorMessage"></div>
-            <button onclick="submitWord()">Bevestig Woord</button>
 
             <div class="used-words">
                 <h3>Gebruikte woorden:</h3>
