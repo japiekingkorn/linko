@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linko - Het Snelle Woordspel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 360px;
+            width: 95%;
+            text-align: center;
+        }
+
+        /* Splash Screen */
+        #splashScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #01beb8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeOut 0.5s ease 2s forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        #splashScreen img {
+            width: 200px;
+            height: 200px;
+            animation: pulse 1.5s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Difficulty Selector */
+        .difficulty-selector {
+            text-align: center;
+        }
+
+        .difficulty-selector h1 {
+            color: #02153f;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .difficulty-selector p {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .difficulty-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .diff-button {
+            background: linear-gradient(135deg, #01beb8 0%, #02153f 100%);
+            color: white;
+            padding: 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-align: left;
+        }
+
+        .diff-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(1, 190, 184, 0.3);
+        }
+
+        .diff-button:active {
+            transform: translateY(0);
+        }
+
+        .diff-button .time {
+            font-size: 0.9em;
+            opacity: 0.9;
+            display: block;
+            margin-top: 5px;
+        }
+
+        h1 {
+            color: #02153f;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 12px;
+            gap: 8px;
+        }
+
+        .info-box {
+            background: #f0f0f0;
+            padding: 8px 12px;
+            border-radius: 8px;
+            flex: 1;
+        }
+
+        .info-label {
+            font-size: 0.75em;
+            color: #666;
+            margin-bottom: 3px;
+        }
+
+        .info-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #02153f;
+        }
+
+        .timer {
+            color: #01beb8;
+            font-size: 1.8em !important;
+        }
+
+        .category-box {
+            background: linear-gradient(135deg, #01beb8 0%, #02153f 100%);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-size: 1em;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .category-box.pulse {
+            animation: categoryPulse 0.5s ease;
+        }
+
+        @keyframes categoryPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .word-display {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border: 2px solid #01beb8;
+        }
+
+        .current-word {
+            font-size: 1.6em;
+            font-weight: bold;
+            color: #01beb8;
+            margin-bottom: 8px;
+        }
+
+        .instruction {
+            color: #666;
+            font-size: 0.85em;
+        }
+
+        .next-letter {
+            color: #fbd809;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #01beb8;
+        }
+
+        button {
+            background: linear-gradient(135deg, #01beb8 0%, #02153f 100%);
+            color: white;
+            padding: 10px 25px;
+            font-size: 1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: bold;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(1, 190, 184, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .used-words {
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 2px solid #eee;
+        }
+
+        .used-words h3 {
+            color: #666;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .word-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+        }
+
+        .word-tag {
+            background: #e8f8f7;
+            color: #01beb8;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 8px;
+            min-height: 20px;
+            font-size: 0.9em;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .game-over {
+            background: linear-gradient(135deg, #01beb8 0%, #02153f 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .game-over h2 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .final-score {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        .joker-message {
+            background: linear-gradient(135deg, #fbd809 0%, #f39c12 100%);
+            color: #02153f;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+            font-weight: bold;
+            animation: jokerPulse 0.6s ease;
+        }
+
+        @keyframes jokerPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div id="splashScreen">
+        <img src="logo.png" alt="Linko Logo">
+    </div>
+
+    <div class="container">
+        <!-- Difficulty Selector -->
+        <div id="difficultyScreen">
+            <h1>⚡ Linko</h1>
+            <p>Kies je moeilijkheidsgraad:</p>
+            <div class="difficulty-buttons">
+                <button class="diff-button" onclick="startGame('easy')">
+                    <div>🎯 Makkelijk</div>
+                    <span class="time">45 seconden per woord</span>
+                </button>
+                <button class="diff-button" onclick="startGame('medium')">
+                    <div>⚡ Gemiddeld</div>
+                    <span class="time">30 seconden per woord</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="hidden">
+            <h1>⚡ Linko</h1>
+            
+            <div class="game-info">
+                <div class="info-box">
+                    <div class="info-label">Beurt</div>
+                    <div class="info-value" id="turnCounter">0</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Tijd</div>
+                    <div class="info-value timer" id="timer">45</div>
+                </div>
+            </div>
+
+            <div id="jokerMessage" class="joker-message hidden">
+                🎁 JOKER! Vrije beginletter
+            </div>
+
+            <div class="category-box">
+                Categorie: <span id="category"></span>
+            </div>
+
+            <div class="word-display">
+                <div class="current-word" id="currentWord"></div>
+                <div class="instruction">
+                    <span id="instructionText">Jouw woord moet beginnen met: <span class="next-letter" id="nextLetter"></span></span>
+                </div>
+            </div>
+
+            <input type="text" id="wordInput" placeholder="Type je woord..." autocomplete="off">
+            <div class="error" id="errorMessage"></div>
+            <button onclick="submitWord()">Bevestig Woord</button>
+
+            <div class="used-words">
+                <h3>Gebruikte woorden:</h3>
+                <div class="word-list" id="usedWordsList"></div>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameOverScreen" class="hidden">
+            <div class="game-over">
+                <h2>Game Over!</h2>
+                <div class="final-score" id="finalScore"></div>
+                <p>woorden voltooid</p>
+            </div>
+            <div class="used-words">
+                <h3>Jouw woorden:</h3>
+                <div class="word-list" id="finalWordsList"></div>
+            </div>
+            <button onclick="location.reload()">Opnieuw Spelen</button>
+        </div>
+    </div>
+
+    <script>
+        const categories = [
+            'Dieren',
+            'Landen/Steden',
+            'Voedsel',
+            'Beroepen',
+            'Voorwerpen',
+            'Planten/Bloemen'
+        ];
+
+        const startWords = [
+            'appel', 'banaan', 'computer', 'dolfijn', 'egel', 'fiets',
+            'gitaar', 'hond', 'ijsbeer', 'kat', 'lamp', 'muis',
+            'noot', 'olifant', 'piano', 'robot', 'stoel', 'tafel',
+            'uil', 'vis', 'wortel', 'zebra'
+        ];
+
+        const difficultLetters = ['x', 'y', 'q'];
+
+        let currentWord = '';
+        let currentCategory = '';
+        let usedWords = [];
+        let turnCount = 0;
+        let timeLeft = 45;
+        let maxTime = 45;
+        let timerInterval;
+        let isJokerActive = false;
+        let difficulty = 'easy';
+
+        // Hide splash screen after 2.5 seconds
+        setTimeout(() => {
+            document.getElementById('splashScreen').style.display = 'none';
+        }, 2500);
+
+        function startGame(selectedDifficulty) {
+            difficulty = selectedDifficulty;
+            maxTime = difficulty === 'easy' ? 45 : 30;
+            timeLeft = maxTime;
+
+            document.getElementById('difficultyScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.remove('hidden');
+            
+            currentCategory = categories[Math.floor(Math.random() * categories.length)];
+            currentWord = startWords[Math.floor(Math.random() * startWords.length)];
+            
+            usedWords.push(currentWord);
+            turnCount = 0;
+            
+            updateDisplay();
+            startTimer();
+            
+            // Focus on input so keyboard appears immediately
+            setTimeout(() => {
+                document.getElementById('wordInput').focus();
+            }, 100);
+        }
+
+        function updateDisplay() {
+            const categoryElement = document.getElementById('category');
+            const categoryBox = categoryElement.parentElement;
+            
+            // Add pulse animation
+            categoryBox.classList.remove('pulse');
+            void categoryBox.offsetWidth; // Trigger reflow
+            categoryBox.classList.add('pulse');
+            
+            categoryElement.textContent = currentCategory;
+            document.getElementById('currentWord').textContent = currentWord.toUpperCase();
+            
+            if (isJokerActive) {
+                document.getElementById('instructionText').innerHTML = 'Joker actief! Kies je eigen beginletter';
+                document.getElementById('jokerMessage').classList.remove('hidden');
+            } else {
+                document.getElementById('instructionText').innerHTML = 
+                    'Jouw woord moet beginnen met: <span class="next-letter" id="nextLetter">' + 
+                    currentWord.slice(-1).toUpperCase() + '</span>';
+                document.getElementById('jokerMessage').classList.add('hidden');
+            }
+            
+            document.getElementById('turnCounter').textContent = turnCount;
+            updateUsedWords();
+        }
+
+        function updateUsedWords() {
+            const wordsList = document.getElementById('usedWordsList');
+            wordsList.innerHTML = '';
+            usedWords.forEach(word => {
+                const tag = document.createElement('div');
+                tag.className = 'word-tag';
+                tag.textContent = word;
+                wordsList.appendChild(tag);
+            });
+        }
+
+        function startTimer() {
+            timeLeft = maxTime;
+            updateTimerDisplay();
+            
+            if (timerInterval) clearInterval(timerInterval);
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                updateBackgroundColor();
+                
+                if (timeLeft <= 0) {
+                    gameOver();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const timerElement = document.getElementById('timer');
+            timerElement.textContent = timeLeft;
+            
+            if (timeLeft <= 5) {
+                timerElement.style.color = '#e74c3c';
+            } else if (timeLeft <= 10) {
+                timerElement.style.color = '#fbd809';
+            } else {
+                timerElement.style.color = '#01beb8';
+            }
+        }
+
+        function updateBackgroundColor() {
+            const progress = timeLeft / maxTime;
+            let r, g, b;
+            
+            if (progress > 0.5) {
+                // Groen naar Geel
+                const localProgress = (progress - 0.5) * 2;
+                r = Math.round(46 + (251 - 46) * (1 - localProgress));
+                g = Math.round(204 + (216 - 204) * (1 - localProgress));
+                b = Math.round(113 + (9 - 113) * (1 - localProgress));
+            } else {
+                // Geel naar Rood
+                const localProgress = progress * 2;
+                r = Math.round(251 + (231 - 251) * (1 - localProgress));
+                g = Math.round(216 + (76 - 216) * (1 - localProgress));
+                b = Math.round(9 + (60 - 9) * (1 - localProgress));
+            }
+            
+            document.body.style.background = `rgb(${r}, ${g}, ${b})`;
+        }
+
+        function checkForJoker(word) {
+            const lastLetter = word.slice(-1).toLowerCase();
+            return difficultLetters.includes(lastLetter);
+        }
+
+        function submitWord() {
+            const input = document.getElementById('wordInput');
+            const word = input.value.trim().toLowerCase();
+            const errorElement = document.getElementById('errorMessage');
+            
+            errorElement.textContent = '';
+            
+            if (!word) {
+                errorElement.textContent = '❌ Voer een woord in!';
+                input.focus();
+                return;
+            }
+            
+            // Check if word starts with correct letter (unless joker is active)
+            if (!isJokerActive) {
+                const requiredLetter = currentWord.slice(-1).toLowerCase();
+                if (word[0] !== requiredLetter) {
+                    errorElement.textContent = `❌ Je woord moet beginnen met "${requiredLetter.toUpperCase()}"!`;
+                    input.focus();
+                    return;
+                }
+            }
+            
+            // Check for duplicates (only in medium difficulty)
+            if (difficulty === 'medium' && usedWords.includes(word)) {
+                errorElement.textContent = '❌ Dit woord is al gebruikt!';
+                input.focus();
+                return;
+            }
+            
+            // Word accepted!
+            currentWord = word;
+            usedWords.push(word);
+            turnCount++;
+            input.value = '';
+            
+            // Check if this word ends with a difficult letter (triggers joker)
+            isJokerActive = checkForJoker(word);
+            
+            // New category
+            currentCategory = categories[Math.floor(Math.random() * categories.length)];
+            
+            updateDisplay();
+            startTimer();
+            
+            // Keep focus on input so keyboard stays open
+            input.focus();
+        }
+
+        function gameOver() {
+            clearInterval(timerInterval);
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('gameOverScreen').classList.remove('hidden');
+            document.getElementById('finalScore').textContent = turnCount;
+            
+            const finalWordsList = document.getElementById('finalWordsList');
+            finalWordsList.innerHTML = '';
+            usedWords.forEach(word => {
+                const tag = document.createElement('div');
+                tag.className = 'word-tag';
+                tag.textContent = word;
+                finalWordsList.appendChild(tag);
+            });
+            
+            document.body.style.background = 'linear-gradient(135deg, #01beb8 0%, #02153f 100%)';
+        }
+
+        // Enter key functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('wordInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    submitWord();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
