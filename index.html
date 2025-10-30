@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Linko - Het Snelle Woordspel</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <meta name="theme-color" content="#02153f">
     <style>
         * {
             margin: 0;
@@ -23,10 +27,10 @@
             overflow: hidden;
             position: fixed;
             width: 100%;
-            background-image: url('icon192.png');
+            background-image: url('icons/icon-384.png');
             background-repeat: no-repeat;
             background-position: center center;
-            background-size: 180px 180px;
+            background-size: 350px 350px;
         }
 
         .container {
@@ -62,8 +66,8 @@
         }
 
         #splashScreen img {
-            width: 200px;
-            height: 200px;
+            width: 250px;
+            height: 250px;
             animation: pulse 1.5s ease infinite;
         }
 
@@ -333,7 +337,7 @@
 <body>
     <!-- Splash Screen -->
     <div id="splashScreen">
-        <img src="icon192.png" alt="Linko Logo">
+        <img src="icons/icon-192.png" alt="Linko Logo">
     </div>
 
     <div class="container">
@@ -387,7 +391,7 @@
                 Heb je suggesties, gevonden bugs, of andere feedback? 
                 Laat het ons weten via het formulier hieronder.
             </p>
-            <button onclick="window.open('https://forms.gle/YOUR_FORM_ID', '_blank')" style="margin-bottom: 10px;">
+            <button onclick="window.open('https://forms.gle/tQdGGuorRmXXYPieA', '_blank')" style="margin-bottom: 10px;">
                 📝 Open Feedbackformulier
             </button>
             <button onclick="backToStart()">Terug</button>
@@ -596,7 +600,7 @@
                 // Groen naar Geel
                 const localProgress = (progress - 0.5) * 2;
                 r = Math.round(46 + (251 - 46) * (1 - localProgress));
-                g = Math.round(204 + (216 - 204) * (1 - localProgress));
+                g = Math.round(204 + (251 - 204) * (1 - localProgress));
                 b = Math.round(113 + (9 - 113) * (1 - localProgress));
             } else {
                 // Geel naar Rood
