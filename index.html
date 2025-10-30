@@ -358,8 +358,8 @@
             background: rgba(255, 255, 255, 0.95);
             padding: 4px 8px;
             border-radius: 6px;
-            margin-top: 4px;
-            margin-bottom: 4px;
+            margin-top: 2px;
+            margin-bottom: 6px;
             text-align: center;
             min-height: 28px;
             display: flex;
@@ -628,11 +628,15 @@
             const jokerDisplay = document.getElementById('jokerDisplay');
             const jokerIcons = document.getElementById('jokerIcons');
             
+            // Verwijder altijd de earned styling
+            jokerDisplay.classList.remove('joker-earned');
+            
             if (lifelineJokers > 0) {
                 jokerDisplay.classList.remove('hidden');
                 jokerIcons.textContent = '🎁'.repeat(lifelineJokers);
             } else {
                 jokerDisplay.classList.add('hidden');
+                jokerIcons.textContent = '';
             }
         }
 
