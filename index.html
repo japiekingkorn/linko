@@ -397,8 +397,9 @@
                 <p><strong>Makkelijk:</strong> 45 seconden, woorden mogen herhaald</p>
                 <p><strong>Gemiddeld:</strong> 30 seconden, elk woord maar 1x</p>
                 
-                <h3 style="margin-top: 15px;">Joker 🎁</h3>
-                <p>Eindigt je woord op X, Y of Q? Dan krijg je een joker en mag je zelf de beginletter kiezen!</p>
+                <h3 style="margin-top: 15px;">Jokers 🎁</h3>
+                <p><strong>Letter-joker:</strong> Eindigt je woord op X, Y of Q? Dan mag je zelf de beginletter kiezen!</p>
+                <p><strong>Levensjoker:</strong> Na 5 goede woorden krijg je een joker die automatisch wordt ingezet als de tijd op is. Je krijgt een nieuwe categorie maar de beginletter blijft!</p>
             </div>
             <button onclick="backToStart()">Terug</button>
         </div>
@@ -500,6 +501,8 @@
         let timerInterval;
         let isJokerActive = false;
         let difficulty = 'easy';
+        let hasLifelineJoker = false;  // Joker na 5 woorden
+        let lifelineJokerUsed = false;  // Of de joker al gebruikt is
 
         // Hide splash screen after 2.5 seconds
         setTimeout(() => {
@@ -519,6 +522,8 @@
             
             usedWords.push(currentWord);
             turnCount = 0;
+            hasLifelineJoker = false;
+            lifelineJokerUsed = false;
             
             updateDisplay();
             startTimer();
@@ -674,6 +679,12 @@
             turnCount++;
             input.value = '';
             
+            // Check if player earned a lifeline joker (after 5 words)
+            if (turnCount === 5 && !lifelineJokerUsed) {
+                hasLifelineJoker = true;
+                showJokerEarned();
+            }
+            
             // Check if this word ends with a difficult letter (triggers joker)
             isJokerActive = checkForJoker(word);
             
@@ -688,6 +699,12 @@
         }
 
         function gameOver() {
+            // Check if player has a lifeline joker available
+            if (hasLifelineJoker && !lifelineJokerUsed) {
+                useLifelineJoker();
+                return;
+            }
+            
             clearInterval(timerInterval);
             document.getElementById('gameScreen').classList.add('hidden');
             document.getElementById('gameOverScreen').classList.remove('hidden');
@@ -703,6 +720,42 @@
             });
             
             document.body.style.background = 'linear-gradient(135deg, #01beb8 0%, #02153f 100%)';
+        }
+
+        function showJokerEarned() {
+            const jokerMsg = document.getElementById('jokerMessage');
+            jokerMsg.textContent = '🎁 JOKER VERDIEND! Wordt automatisch gebruikt bij time-out';
+            jokerMsg.classList.remove('hidden');
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                jokerMsg.classList.add('hidden');
+            }, 3000);
+        }
+
+        function useLifelineJoker() {
+            lifelineJokerUsed = true;
+            hasLifelineJoker = false;
+            
+            // Show joker activation message
+            const jokerMsg = document.getElementById('jokerMessage');
+            jokerMsg.textContent = '🎁 JOKER ACTIEF! Categorie verandert, beginletter blijft';
+            jokerMsg.classList.remove('hidden');
+            
+            // Change category but keep the same starting letter
+            currentCategory = categories[Math.floor(Math.random() * categories.length)];
+            
+            // Update display and restart timer
+            updateDisplay();
+            startTimer();
+            
+            // Hide joker message after 3 seconds
+            setTimeout(() => {
+                jokerMsg.classList.add('hidden');
+            }, 3000);
+            
+            // Focus on input
+            document.getElementById('wordInput').focus();
         }
 
         // Enter key functionality
