@@ -340,17 +340,32 @@
         .joker-message {
             background: linear-gradient(135deg, #fbd809 0%, #f39c12 100%);
             color: #02153f;
-            padding: 6px;
+            padding: 8px;
             border-radius: 6px;
             margin-bottom: 6px;
-            font-size: 0.85em;
+            font-size: 0.9em;
             font-weight: bold;
             animation: jokerPulse 0.6s ease;
+            text-align: center;
         }
 
         @keyframes jokerPulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
+        }
+
+        .joker-display {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px;
+            border-radius: 6px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .joker-display #jokerIcons {
+            font-size: 1.5em;
+            letter-spacing: 5px;
         }
     </style>
 </head>
@@ -451,6 +466,11 @@
 
             <input type="text" id="wordInput" placeholder="Type je woord..." autocomplete="off">
             <div class="error" id="errorMessage"></div>
+            
+            <!-- Joker Display -->
+            <div id="jokerDisplay" class="joker-display hidden">
+                <div id="jokerIcons"></div>
+            </div>
 
             <div class="used-words">
                 <h3>Gebruikte woorden:</h3>
@@ -576,6 +596,7 @@
             
             document.getElementById('turnCounter').textContent = turnCount;
             updateUsedWords();
+            updateJokerDisplay();
         }
 
         function updateUsedWords() {
@@ -587,6 +608,18 @@
                 tag.textContent = word;
                 wordsList.appendChild(tag);
             });
+        }
+
+        function updateJokerDisplay() {
+            const jokerDisplay = document.getElementById('jokerDisplay');
+            const jokerIcons = document.getElementById('jokerIcons');
+            
+            if (lifelineJokers > 0) {
+                jokerDisplay.classList.remove('hidden');
+                jokerIcons.textContent = '🎁'.repeat(lifelineJokers);
+            } else {
+                jokerDisplay.classList.add('hidden');
+            }
         }
 
         function startTimer() {
@@ -734,10 +767,13 @@
             jokerMsg.textContent = `🎁 JOKER VERDIEND! Je hebt nu ${lifelineJokers} joker${lifelineJokers > 1 ? 's' : ''}`;
             jokerMsg.classList.remove('hidden');
             
-            // Hide after 3 seconds
+            // Update joker display meteen
+            updateJokerDisplay();
+            
+            // Hide after 4 seconds (langer zichtbaar)
             setTimeout(() => {
                 jokerMsg.classList.add('hidden');
-            }, 3000);
+            }, 4000);
         }
 
         function useLifelineJoker() {
