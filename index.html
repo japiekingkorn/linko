@@ -8,6 +8,9 @@
     <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
     <meta name="theme-color" content="#02153f">
+    
+    <!-- Nederlands woordenboek voor validatie -->
+    <script src="words.js"></script>
     <style>
         * {
             margin: 0;
@@ -404,21 +407,21 @@
     <div class="container">
         <!-- Start Screen -->
         <div id="startScreen">
-            <h1>⚡ Linko</h1>
+            <h1>âš¡ Linko</h1>
             <p>Het snelle woordspel</p>
             <div class="difficulty-buttons">
                 <button class="diff-button" onclick="startGame('easy')">
-                    <div>🎯 Speel Spel (Makkelijk)</div>
+                    <div>ðŸŽ¯ Speel Spel (Makkelijk)</div>
                 </button>
                 <button class="diff-button" onclick="startGame('medium')">
-                    <div>⚡ Speel Spel (Gemiddeld)</div>
+                    <div>âš¡ Speel Spel (Gemiddeld)</div>
                 </button>
                 <div class="info-buttons">
                     <button class="info-button" onclick="showInfo()">
-                        <div>📖 Speluitleg</div>
+                        <div>ðŸ“– Speluitleg</div>
                     </button>
                     <button class="info-button" onclick="showFeedback()">
-                        <div>💬 Feedback</div>
+                        <div>ðŸ’¬ Feedback</div>
                     </button>
                 </div>
             </div>
@@ -426,19 +429,19 @@
 
         <!-- Info Screen -->
         <div id="infoScreen" class="hidden">
-            <h1>📖 Speluitleg</h1>
+            <h1>ðŸ“– Speluitleg</h1>
             <div style="text-align: left; padding: 10px; line-height: 1.6; font-size: 0.9em;">
                 <h3>Hoe werkt Linko?</h3>
-                <p>• Bedenk een woord dat begint met de laatste letter van het vorige woord</p>
-                <p>• Het woord moet passen bij de opgegeven categorie</p>
-                <p>• Elk woord mag maar 1x gebruikt worden (gemiddeld niveau)</p>
-                <p>• Je hebt beperkte tijd per woord</p>
+                <p>â€¢ Bedenk een woord dat begint met de laatste letter van het vorige woord</p>
+                <p>â€¢ Het woord moet passen bij de opgegeven categorie</p>
+                <p>â€¢ Elk woord mag maar 1x gebruikt worden (gemiddeld niveau)</p>
+                <p>â€¢ Je hebt beperkte tijd per woord</p>
                 
                 <h3 style="margin-top: 15px;">Moeilijkheidsgraden</h3>
                 <p><strong>Makkelijk:</strong> 45 seconden, woorden mogen herhaald</p>
                 <p><strong>Gemiddeld:</strong> 30 seconden, elk woord maar 1x</p>
                 
-                <h3 style="margin-top: 15px;">Jokers 🎁</h3>
+                <h3 style="margin-top: 15px;">Jokers ðŸŽ</h3>
                 <p><strong>Letter-joker:</strong> Eindigt je woord op X, Y of Q? Dan mag je zelf de beginletter kiezen!</p>
                 <p><strong>Levensjoker:</strong> Elke 5 goede woorden (5, 10, 15...) krijg je een joker. Deze wordt automatisch gebruikt bij time-out. Jokers stapelen op! Let op: als je via een joker op een 5-voud komt, krijg je daar geen nieuwe joker voor.</p>
             </div>
@@ -447,14 +450,14 @@
 
         <!-- Feedback Screen -->
         <div id="feedbackScreen" class="hidden">
-            <h1>💬 Feedback</h1>
+            <h1>ðŸ’¬ Feedback</h1>
             <p style="margin-bottom: 20px;">Help ons Linko te verbeteren!</p>
             <p style="font-size: 0.9em; line-height: 1.5; margin-bottom: 20px;">
                 Heb je suggesties, gevonden bugs, of andere feedback? 
                 Laat het ons weten via het formulier hieronder.
             </p>
             <button onclick="window.open('https://forms.gle/tQdGGuorRmXXYPieA', '_blank')" style="margin-bottom: 10px;">
-                📝 Open Feedbackformulier
+                ðŸ“ Open Feedbackformulier
             </button>
             <button onclick="backToStart()">Terug</button>
             <p style="font-size: 0.8em; color: #666; margin-top: 15px;">
@@ -476,7 +479,7 @@
             </div>
 
             <div id="jokerMessage" class="joker-message hidden">
-                🎁 JOKER! Vrije beginletter
+                ðŸŽ JOKER! Vrije beginletter
             </div>
 
             <div class="category-box">
@@ -642,7 +645,7 @@
             
             if (lifelineJokers > 0) {
                 jokerDisplay.classList.remove('hidden');
-                jokerIcons.textContent = '🎁'.repeat(lifelineJokers);
+                jokerIcons.textContent = 'ðŸŽ'.repeat(lifelineJokers);
                 
                 // Als we niet een animatie moeten skippen, verwijder de earned styling
                 if (skipAnimation) {
@@ -719,16 +722,23 @@
             errorElement.textContent = '';
             
             if (!word) {
-                errorElement.textContent = '❌ Voer een woord in!';
+                errorElement.textContent = 'âŒ Voer een woord in!';
                 input.focus();
                 return;
             }
             
+            
+            // âœ… Check if word exists in Dutch dictionary
+            if (typeof isValidDutchWord === 'function' && !isValidDutchWord(word)) {
+                errorElement.textContent = 'âŒ Dit woord bestaat niet in het woordenboek!';
+                input.focus();
+                return;
+            }
             // Check if word starts with correct letter (unless joker is active)
             if (!isJokerActive) {
                 const requiredLetter = currentWord.slice(-1).toLowerCase();
                 if (word[0] !== requiredLetter) {
-                    errorElement.textContent = `❌ Je woord moet beginnen met "${requiredLetter.toUpperCase()}"!`;
+                    errorElement.textContent = `âŒ Je woord moet beginnen met "${requiredLetter.toUpperCase()}"!`;
                     input.focus();
                     return;
                 }
@@ -736,7 +746,7 @@
             
             // Check for duplicates (only in medium difficulty)
             if (difficulty === 'medium' && usedWords.includes(word)) {
-                errorElement.textContent = '❌ Dit woord is al gebruikt!';
+                errorElement.textContent = 'âŒ Dit woord is al gebruikt!';
                 input.focus();
                 return;
             }
@@ -802,12 +812,12 @@
             // Toon "JOKER VERDIEND!" melding
             jokerDisplay.classList.remove('hidden');
             jokerDisplay.classList.add('joker-earned');
-            jokerIcons.textContent = `🎁 JOKER VERDIEND!`;
+            jokerIcons.textContent = `ðŸŽ JOKER VERDIEND!`;
             
             // Na 2 seconden: verander naar joker iconen
             setTimeout(() => {
                 jokerDisplay.classList.remove('joker-earned');
-                jokerIcons.textContent = '🎁'.repeat(lifelineJokers);
+                jokerIcons.textContent = 'ðŸŽ'.repeat(lifelineJokers);
             }, 2000);
         }
 
@@ -827,7 +837,7 @@
             // Show joker activation message with count
             const jokerMsg = document.getElementById('jokerMessage');
             const jokersLeft = lifelineJokers > 0 ? ` (${lifelineJokers} joker${lifelineJokers > 1 ? 's' : ''} over)` : '';
-            jokerMsg.textContent = `🎁 JOKER ACTIEF! Categorie verandert, beginletter blijft${jokersLeft}`;
+            jokerMsg.textContent = `ðŸŽ JOKER ACTIEF! Categorie verandert, beginletter blijft${jokersLeft}`;
             jokerMsg.classList.remove('hidden');
             
             // Change category but keep the same starting letter
