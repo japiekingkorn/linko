@@ -358,13 +358,14 @@
             background: rgba(255, 255, 255, 0.95);
             padding: 4px 8px;
             border-radius: 6px;
-            margin-top: 2px;
+            margin-top: 0px;
             margin-bottom: 6px;
             text-align: center;
             min-height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: background 0.3s ease;
         }
 
         .joker-display #jokerIcons {
@@ -374,12 +375,22 @@
 
         .joker-earned {
             animation: jokerEarnedPulse 0.8s ease;
-            background: linear-gradient(135deg, #fbd809 0%, #f39c12 100%);
+            background: linear-gradient(135deg, #fbd809 0%, #f39c12 100%) !important;
+        }
+
+        .joker-used {
+            animation: jokerUsedPulse 0.8s ease;
+            background: linear-gradient(135deg, #01beb8 0%, #02a39e 100%) !important;
         }
 
         @keyframes jokerEarnedPulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.08); }
+        }
+
+        @keyframes jokerUsedPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(0.92); }
         }
     </style>
 </head>
@@ -624,18 +635,21 @@
             });
         }
 
-        function updateJokerDisplay() {
+        function updateJokerDisplay(skipAnimation = false) {
             const jokerDisplay = document.getElementById('jokerDisplay');
             const jokerIcons = document.getElementById('jokerIcons');
-            
-            // Verwijder altijd de earned styling
-            jokerDisplay.classList.remove('joker-earned');
             
             if (lifelineJokers > 0) {
                 jokerDisplay.classList.remove('hidden');
                 jokerIcons.textContent = '🎁'.repeat(lifelineJokers);
+                
+                // Als we niet een animatie moeten skippen, verwijder de earned styling
+                if (skipAnimation) {
+                    jokerDisplay.classList.remove('joker-earned');
+                }
             } else {
                 jokerDisplay.classList.add('hidden');
+                jokerDisplay.classList.remove('joker-earned');
                 jokerIcons.textContent = '';
             }
         }
@@ -799,6 +813,15 @@
         function useLifelineJoker() {
             lifelineJokers--;  // Gebruik een joker
             lastTurnWasJoker = true;  // Markeer dat deze beurt via joker was
+            
+            // Toon blauwe "joker gebruikt" animatie
+            const jokerDisplay = document.getElementById('jokerDisplay');
+            jokerDisplay.classList.add('joker-used');
+            
+            // Verwijder de animatie na 800ms
+            setTimeout(() => {
+                jokerDisplay.classList.remove('joker-used');
+            }, 800);
             
             // Show joker activation message with count
             const jokerMsg = document.getElementById('jokerMessage');
