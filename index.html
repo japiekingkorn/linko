@@ -399,7 +399,7 @@
                 
                 <h3 style="margin-top: 15px;">Jokers 🎁</h3>
                 <p><strong>Letter-joker:</strong> Eindigt je woord op X, Y of Q? Dan mag je zelf de beginletter kiezen!</p>
-                <p><strong>Levensjoker:</strong> Na 5 goede woorden krijg je een joker die automatisch wordt ingezet als de tijd op is. Je krijgt een nieuwe categorie maar de beginletter blijft!</p>
+                <p><strong>Levensjoker:</strong> Elke 5 goede woorden (5, 10, 15...) krijg je een joker. Deze wordt automatisch gebruikt bij time-out. Jokers stapelen op! Let op: als je via een joker op een 5-voud komt, krijg je daar geen nieuwe joker voor.</p>
             </div>
             <button onclick="backToStart()">Terug</button>
         </div>
@@ -501,8 +501,9 @@
         let timerInterval;
         let isJokerActive = false;
         let difficulty = 'easy';
-        let hasLifelineJoker = false;  // Joker na 5 woorden
-        let lifelineJokerUsed = false;  // Of de joker al gebruikt is
+        let lifelineJokers = 0;  // Aantal beschikbare jokers (kunnen opstapelen)
+        let lastJokerEarnedAt = 0;  // Bij welke score de laatste joker verdiend is
+        let lastTurnWasJoker = false;  // Of de vorige beurt via joker was
 
         // Hide splash screen after 2.5 seconds
         setTimeout(() => {
@@ -522,8 +523,9 @@
             
             usedWords.push(currentWord);
             turnCount = 0;
-            hasLifelineJoker = false;
-            lifelineJokerUsed = false;
+            lifelineJokers = 0;
+            lastJokerEarnedAt = 0;
+            lastTurnWasJoker = false;
             
             updateDisplay();
             startTimer();
@@ -679,11 +681,16 @@
             turnCount++;
             input.value = '';
             
-            // Check if player earned a lifeline joker (after 5 words)
-            if (turnCount === 5 && !lifelineJokerUsed) {
-                hasLifelineJoker = true;
+            // Check if player earned a lifeline joker (every 5 words)
+            // Maar NIET als de vorige beurt via joker was (dan heb je de milestone niet "zelf" gehaald)
+            if (turnCount % 5 === 0 && !lastTurnWasJoker) {
+                lifelineJokers++;
+                lastJokerEarnedAt = turnCount;
                 showJokerEarned();
             }
+            
+            // Reset lastTurnWasJoker (deze beurt was via handmatige invoer)
+            lastTurnWasJoker = false;
             
             // Check if this word ends with a difficult letter (triggers joker)
             isJokerActive = checkForJoker(word);
@@ -700,7 +707,7 @@
 
         function gameOver() {
             // Check if player has a lifeline joker available
-            if (hasLifelineJoker && !lifelineJokerUsed) {
+            if (lifelineJokers > 0) {
                 useLifelineJoker();
                 return;
             }
@@ -724,7 +731,7 @@
 
         function showJokerEarned() {
             const jokerMsg = document.getElementById('jokerMessage');
-            jokerMsg.textContent = '🎁 JOKER VERDIEND! Wordt automatisch gebruikt bij time-out';
+            jokerMsg.textContent = `🎁 JOKER VERDIEND! Je hebt nu ${lifelineJokers} joker${lifelineJokers > 1 ? 's' : ''}`;
             jokerMsg.classList.remove('hidden');
             
             // Hide after 3 seconds
@@ -734,12 +741,13 @@
         }
 
         function useLifelineJoker() {
-            lifelineJokerUsed = true;
-            hasLifelineJoker = false;
+            lifelineJokers--;  // Gebruik een joker
+            lastTurnWasJoker = true;  // Markeer dat deze beurt via joker was
             
-            // Show joker activation message
+            // Show joker activation message with count
             const jokerMsg = document.getElementById('jokerMessage');
-            jokerMsg.textContent = '🎁 JOKER ACTIEF! Categorie verandert, beginletter blijft';
+            const jokersLeft = lifelineJokers > 0 ? ` (${lifelineJokers} joker${lifelineJokers > 1 ? 's' : ''} over)` : '';
+            jokerMsg.textContent = `🎁 JOKER ACTIEF! Categorie verandert, beginletter blijft${jokersLeft}`;
             jokerMsg.classList.remove('hidden');
             
             // Change category but keep the same starting letter
