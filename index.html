@@ -356,16 +356,30 @@
 
         .joker-display {
             background: rgba(255, 255, 255, 0.95);
-            padding: 8px;
+            padding: 4px 8px;
             border-radius: 6px;
-            margin-top: 8px;
-            margin-bottom: 8px;
+            margin-top: 4px;
+            margin-bottom: 4px;
             text-align: center;
+            min-height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .joker-display #jokerIcons {
-            font-size: 1.5em;
-            letter-spacing: 5px;
+            font-size: 1.3em;
+            letter-spacing: 4px;
+        }
+
+        .joker-earned {
+            animation: jokerEarnedPulse 0.8s ease;
+            background: linear-gradient(135deg, #fbd809 0%, #f39c12 100%);
+        }
+
+        @keyframes jokerEarnedPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
         }
     </style>
 </head>
@@ -763,17 +777,19 @@
         }
 
         function showJokerEarned() {
-            const jokerMsg = document.getElementById('jokerMessage');
-            jokerMsg.textContent = `🎁 JOKER VERDIEND! Je hebt nu ${lifelineJokers} joker${lifelineJokers > 1 ? 's' : ''}`;
-            jokerMsg.classList.remove('hidden');
+            const jokerDisplay = document.getElementById('jokerDisplay');
+            const jokerIcons = document.getElementById('jokerIcons');
             
-            // Update joker display meteen
-            updateJokerDisplay();
+            // Toon "JOKER VERDIEND!" melding
+            jokerDisplay.classList.remove('hidden');
+            jokerDisplay.classList.add('joker-earned');
+            jokerIcons.textContent = `🎁 JOKER VERDIEND!`;
             
-            // Hide after 4 seconds (langer zichtbaar)
+            // Na 2 seconden: verander naar joker iconen
             setTimeout(() => {
-                jokerMsg.classList.add('hidden');
-            }, 4000);
+                jokerDisplay.classList.remove('joker-earned');
+                jokerIcons.textContent = '🎁'.repeat(lifelineJokers);
+            }, 2000);
         }
 
         function useLifelineJoker() {
