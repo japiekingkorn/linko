@@ -411,17 +411,17 @@
             <p>Het snelle woordspel</p>
             <div class="difficulty-buttons">
                 <button class="diff-button" onclick="startGame('easy')">
-                    <div>ðŸŽ¯ Speel Spel (Makkelijk)</div>
+                    <div>🎯 Speel Spel (Makkelijk)</div>
                 </button>
                 <button class="diff-button" onclick="startGame('medium')">
-                    <div>âš¡ Speel Spel (Gemiddeld)</div>
+                    <div>⚡ Speel Spel (Gemiddeld)</div>
                 </button>
                 <div class="info-buttons">
                     <button class="info-button" onclick="showInfo()">
-                        <div>ðŸ“– Speluitleg</div>
+                        <div>📖 Speluitleg</div>
                     </button>
                     <button class="info-button" onclick="showFeedback()">
-                        <div>ðŸ’¬ Feedback</div>
+                        <div>💬 Feedback</div>
                     </button>
                 </div>
             </div>
@@ -479,7 +479,7 @@
             </div>
 
             <div id="jokerMessage" class="joker-message hidden">
-                ðŸŽ JOKER! Vrije beginletter
+                🎁 JOKER! Vrije beginletter
             </div>
 
             <div class="category-box">
@@ -645,7 +645,7 @@
             
             if (lifelineJokers > 0) {
                 jokerDisplay.classList.remove('hidden');
-                jokerIcons.textContent = 'ðŸŽ'.repeat(lifelineJokers);
+                jokerIcons.textContent = '🎁'.repeat(lifelineJokers);
                 
                 // Als we niet een animatie moeten skippen, verwijder de earned styling
                 if (skipAnimation) {
@@ -722,23 +722,23 @@
             errorElement.textContent = '';
             
             if (!word) {
-                errorElement.textContent = 'âŒ Voer een woord in!';
+                errorElement.textContent = '❌ Voer een woord in!';
                 input.focus();
                 return;
             }
             
-            
-            // âœ… Check if word exists in Dutch dictionary
+            // ✅ Check if word exists in Dutch dictionary
             if (typeof isValidDutchWord === 'function' && !isValidDutchWord(word)) {
-                errorElement.textContent = 'âŒ Dit woord bestaat niet in het woordenboek!';
+                errorElement.textContent = '❌ Dit woord bestaat niet in het woordenboek!';
                 input.focus();
                 return;
             }
+            
             // Check if word starts with correct letter (unless joker is active)
             if (!isJokerActive) {
                 const requiredLetter = currentWord.slice(-1).toLowerCase();
                 if (word[0] !== requiredLetter) {
-                    errorElement.textContent = `âŒ Je woord moet beginnen met "${requiredLetter.toUpperCase()}"!`;
+                    errorElement.textContent = `❌ Je woord moet beginnen met "${requiredLetter.toUpperCase()}"!`;
                     input.focus();
                     return;
                 }
@@ -746,7 +746,7 @@
             
             // Check for duplicates (only in medium difficulty)
             if (difficulty === 'medium' && usedWords.includes(word)) {
-                errorElement.textContent = 'âŒ Dit woord is al gebruikt!';
+                errorElement.textContent = '❌ Dit woord is al gebruikt!';
                 input.focus();
                 return;
             }
@@ -812,12 +812,12 @@
             // Toon "JOKER VERDIEND!" melding
             jokerDisplay.classList.remove('hidden');
             jokerDisplay.classList.add('joker-earned');
-            jokerIcons.textContent = `ðŸŽ JOKER VERDIEND!`;
+            jokerIcons.textContent = `🎁 JOKER VERDIEND!`;
             
             // Na 2 seconden: verander naar joker iconen
             setTimeout(() => {
                 jokerDisplay.classList.remove('joker-earned');
-                jokerIcons.textContent = 'ðŸŽ'.repeat(lifelineJokers);
+                jokerIcons.textContent = '🎁'.repeat(lifelineJokers);
             }, 2000);
         }
 
@@ -837,7 +837,7 @@
             // Show joker activation message with count
             const jokerMsg = document.getElementById('jokerMessage');
             const jokersLeft = lifelineJokers > 0 ? ` (${lifelineJokers} joker${lifelineJokers > 1 ? 's' : ''} over)` : '';
-            jokerMsg.textContent = `ðŸŽ JOKER ACTIEF! Categorie verandert, beginletter blijft${jokersLeft}`;
+            jokerMsg.textContent = `🎁 JOKER ACTIEF! Categorie verandert, beginletter blijft${jokersLeft}`;
             jokerMsg.classList.remove('hidden');
             
             // Change category but keep the same starting letter
