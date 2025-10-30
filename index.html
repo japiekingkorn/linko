@@ -72,22 +72,29 @@
             50% { transform: scale(1.05); }
         }
 
-        /* Difficulty Selector */
-        .difficulty-selector {
-            text-align: center;
-        }
-
-        .difficulty-selector h1 {
+        /* Start Screen */
+        #startScreen h1 {
             color: #02153f;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             font-size: 1.8em;
         }
 
-        .difficulty-selector p {
+        #startScreen p {
             color: #666;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             font-size: 0.95em;
-            line-height: 1.5;
+        }
+
+        #infoScreen h1, #feedbackScreen h1 {
+            color: #02153f;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        #infoScreen h3 {
+            color: #01beb8;
+            font-size: 1em;
+            margin-bottom: 8px;
         }
 
         .difficulty-buttons {
@@ -330,20 +337,63 @@
     </div>
 
     <div class="container">
-        <!-- Difficulty Selector -->
-        <div id="difficultyScreen">
+        <!-- Start Screen -->
+        <div id="startScreen">
             <h1>⚡ Linko</h1>
-            <p>Kies je moeilijkheidsgraad:</p>
+            <p>Het snelle woordspel</p>
             <div class="difficulty-buttons">
                 <button class="diff-button" onclick="startGame('easy')">
-                    <div>🎯 Makkelijk</div>
+                    <div>🎯 Speel Spel (Makkelijk)</div>
                     <span class="time">45 seconden per woord</span>
                 </button>
                 <button class="diff-button" onclick="startGame('medium')">
-                    <div>⚡ Gemiddeld</div>
+                    <div>⚡ Speel Spel (Gemiddeld)</div>
                     <span class="time">30 seconden per woord</span>
                 </button>
+                <button class="diff-button" onclick="showInfo()">
+                    <div>ℹ️ Info</div>
+                </button>
+                <button class="diff-button" onclick="showFeedback()">
+                    <div>💬 Feedback</div>
+                </button>
             </div>
+        </div>
+
+        <!-- Info Screen -->
+        <div id="infoScreen" class="hidden">
+            <h1>ℹ️ Info</h1>
+            <div style="text-align: left; padding: 10px; line-height: 1.6; font-size: 0.9em;">
+                <h3>Hoe werkt Linko?</h3>
+                <p>• Bedenk een woord dat begint met de laatste letter van het vorige woord</p>
+                <p>• Het woord moet passen bij de opgegeven categorie</p>
+                <p>• Elk woord mag maar 1x gebruikt worden (gemiddeld niveau)</p>
+                <p>• Je hebt beperkte tijd per woord</p>
+                
+                <h3 style="margin-top: 15px;">Moeilijkheidsgraden</h3>
+                <p><strong>Makkelijk:</strong> 45 seconden, woorden mogen herhaald</p>
+                <p><strong>Gemiddeld:</strong> 30 seconden, elk woord maar 1x</p>
+                
+                <h3 style="margin-top: 15px;">Joker 🎁</h3>
+                <p>Eindigt je woord op X, Y of Q? Dan krijg je een joker en mag je zelf de beginletter kiezen!</p>
+            </div>
+            <button onclick="backToStart()">Terug</button>
+        </div>
+
+        <!-- Feedback Screen -->
+        <div id="feedbackScreen" class="hidden">
+            <h1>💬 Feedback</h1>
+            <p style="margin-bottom: 20px;">Help ons Linko te verbeteren!</p>
+            <p style="font-size: 0.9em; line-height: 1.5; margin-bottom: 20px;">
+                Heb je suggesties, gevonden bugs, of andere feedback? 
+                Laat het ons weten via het formulier hieronder.
+            </p>
+            <button onclick="window.open('https://forms.gle/YOUR_FORM_ID', '_blank')" style="margin-bottom: 10px;">
+                📝 Open Feedbackformulier
+            </button>
+            <button onclick="backToStart()">Terug</button>
+            <p style="font-size: 0.8em; color: #666; margin-top: 15px;">
+                Je wordt naar Google Forms doorgestuurd
+            </p>
         </div>
 
         <!-- Game Screen -->
@@ -437,7 +487,7 @@
             maxTime = difficulty === 'easy' ? 45 : 30;
             timeLeft = maxTime;
 
-            document.getElementById('difficultyScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.add('hidden');
             document.getElementById('gameScreen').classList.remove('hidden');
             
             currentCategory = categories[Math.floor(Math.random() * categories.length)];
@@ -453,6 +503,22 @@
             setTimeout(() => {
                 document.getElementById('wordInput').focus();
             }, 100);
+        }
+
+        function showInfo() {
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('infoScreen').classList.remove('hidden');
+        }
+
+        function showFeedback() {
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('feedbackScreen').classList.remove('hidden');
+        }
+
+        function backToStart() {
+            document.getElementById('infoScreen').classList.add('hidden');
+            document.getElementById('feedbackScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
         }
 
         function updateDisplay() {
