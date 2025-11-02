@@ -11,6 +11,9 @@
     
     <!-- Nederlands woordenboek voor validatie -->
     <script src="words.js"></script>
+    
+    <!-- Categorie woordenlijsten (Fase 2) -->
+    <script src="category-words.js"></script>
     <style>
         * {
             margin: 0;
@@ -743,6 +746,18 @@
                     errorElement.textContent = `❌ Je woord moet beginnen met "${requiredLetter.toUpperCase()}"!`;
                     input.focus();
                     return;
+                }
+            }
+            
+            // 🎯 Optionele categorie check (Fase 2 - Losjes model)
+            // Woord wordt altijd geaccepteerd, maar we loggen of het in de categorie lijst staat
+            if (typeof matchesCategory === 'function') {
+                if (!matchesCategory(word, currentCategory)) {
+                    // Woord staat NIET in categorie lijst, maar we accepteren het toch (losjes model)
+                    console.log(`ℹ️ "${word}" staat niet in onze ${currentCategory} lijst, maar wordt geaccepteerd`);
+                } else {
+                    // Woord staat in categorie lijst - perfect!
+                    console.log(`✅ "${word}" past bij ${currentCategory}`);
                 }
             }
             
