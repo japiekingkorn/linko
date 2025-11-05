@@ -9,8 +9,7 @@
     <link rel="apple-touch-icon" href="icons/icon-192.png">
     <meta name="theme-color" content="#02153f">
     
-    <!-- Nederlands woordenboek + categorie validatie -->
-    <script src="words.js"></script>
+    <!-- Categorie validatie (optioneel) -->
     <script src="category-words.js"></script>
     <style>
         * {
@@ -734,18 +733,7 @@
                 return;
             }
             
-            // ✅ Check 1: Bestaat het woord in het woordenboek?
-            if (typeof isValidDutchWord === 'function') {
-                if (!isValidDutchWord(word)) {
-                    errorElement.textContent = '❌ Dit woord bestaat niet in het woordenboek!';
-                    input.focus();
-                    return;
-                }
-            } else {
-                console.warn('⚠️ Woordvalidatie (words.js) niet geladen!');
-            }
-            
-            // ✅ Check 2: Begint het woord met de juiste letter?
+            // Check if word starts with correct letter (unless joker is active)
             if (!isJokerActive) {
                 const requiredLetter = currentWord.slice(-1).toLowerCase();
                 if (word[0] !== requiredLetter) {
@@ -755,14 +743,62 @@
                 }
             }
             
-            // ✅ Check 3: Is het woord al gebruikt? (alleen bij medium)
+            // Check for duplicates (only in medium difficulty)
             if (difficulty === 'medium' && usedWords.includes(word)) {
                 errorElement.textContent = '❌ Dit woord is al gebruikt!';
                 input.focus();
                 return;
             }
             
-            // ⚠️ Check 4: Past het woord bij de categorie? (waarschuwing, geen blokkade)
+            // ✅ Validate word with API (async)
+            validateWordWithAPI(word).then(isValid => {
+                if (!isValid) {
+                    errorElement.textContent = '❌ Dit woord bestaat niet in het woordenboek!';
+                    input.focus();
+                    return;
+                }
+                
+                // Word is valid! Continue with game logic
+                acceptWord(word, input, warningElement);
+            }).catch(error => {
+                console.error('API Error:', error);
+                // Fail-safe: accept word if API fails
+                console.warn('⚠️ API niet beschikbaar, woord wordt geaccepteerd');
+                acceptWord(word, input, warningElement);
+            });
+        }
+        
+        async function validateWordWithAPI(word) {
+            try {
+                // Try Dutch dictionary API
+                const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/nl/${word}`);
+                
+                if (response.status === 404) {
+                    // Word not found
+                    return false;
+                }
+                
+                if (!response.ok) {
+                    throw new Error('API error');
+                }
+                
+                const data = await response.json();
+                
+                // Check if we got a valid response
+                if (data.title === "No Definitions Found") {
+                    return false;
+                }
+                
+                return true;
+            } catch (error) {
+                console.error('Dictionary API error:', error);
+                // Fail-safe: accept word if API is down
+                return true;
+            }
+        }
+        
+        function acceptWord(word, input, warningElement) {
+            // ⚠️ Optional: Check category match (warning only)
             if (typeof matchesCategory === 'function') {
                 if (!matchesCategory(word, currentCategory)) {
                     warningElement.textContent = `⚠️ "${word}" staat niet in onze ${currentCategory} lijst, maar wordt geaccepteerd`;
@@ -770,7 +806,7 @@
                 }
             }
             
-            // ✅ Woord geaccepteerd!
+            // ✅ Word accepted!
             currentWord = word;
             usedWords.push(word);
             turnCount++;
