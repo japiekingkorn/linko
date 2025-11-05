@@ -788,31 +788,22 @@
                     }
                 });
                 
-                if (response.status === 404) {
-                    console.log(`❌ "${word}" ook niet in API gevonden`);
-                    return false;
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    if (data.title !== "No Definitions Found") {
+                        console.log(`✅ "${word}" gevonden in API`);
+                        return true;
+                    }
                 }
                 
-                if (!response.ok) {
-                    console.warn('⚠️ API error, accepteer woord (fail-safe)');
-                    return true; // Fail-safe
-                }
-                
-                const data = await response.json();
-                
-                if (data.title === "No Definitions Found") {
-                    console.log(`❌ "${word}" ook niet in API gevonden`);
-                    return false;
-                }
-                
-                console.log(`✅ "${word}" gevonden in API`);
-                return true;
+                // STAP 3: Niet in lokale lijst EN niet in API → ACCEPTEER TOCH (losjes systeem)
+                console.log(`⚠️ "${word}" niet gevalideerd, maar wordt geaccepteerd (losjes modus)`);
+                return true; // LOSJES: accepteer alle woorden die niet duidelijk fake zijn
                 
             } catch (error) {
-                console.error('API error:', error);
-                // Fail-safe: bij API problemen, accepteer woord
                 console.warn('⚠️ API niet bereikbaar, woord wordt geaccepteerd (fail-safe)');
-                return true;
+                return true; // Fail-safe
             }
         }
         

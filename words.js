@@ -7,7 +7,7 @@ const dutchWords = new Set([
     'arend', 'armadillo', 'baboon', 'baars', 'baarskop', 'beer', 'biber', 'bij', 'bison', 'blauwalg',
     'boa', 'bok', 'boomkikker', 'buffel', 'capibara', 'capybara', 'cheetah', 'chimpansee', 'chinchilla', 'coyote',
     'das', 'dier', 'dodo', 'dolfijn', 'duif', 'duiker', 'eekhoorn', 'egel', 'ekster', 'eland',
-    'emoe', 'flamingo', 'fret', 'gazelle', 'geit', 'gier', 'giraffe', 'gnoe', 'gorilla', 'haai',
+    'emoe', 'ezel', 'fazant', 'flamingo', 'fret', 'gazelle', 'geit', 'gier', 'giraffe', 'gnoe', 'gorilla', 'haai',
     'hagedis', 'hamster', 'haring', 'havik', 'hond', 'hyena', 'ibis', 'ijsbeer', 'impala', 'jaguar',
     'kalf', 'kameel', 'kangaroo', 'kangoeroe', 'kat', 'kever', 'kip', 'kikker', 'koe', 'koala',
     'koekoek', 'kolibrie', 'konijn', 'krab', 'kreeft', 'krokodil', 'lama', 'lammersgier', 'leeuw', 'leeuwerik',
@@ -44,7 +44,7 @@ const dutchWords = new Set([
     'tokyo', 'toronto', 'washington',
     
     // Landen
-    'afghanistan', 'albanie', 'algerije', 'andorra', 'angola', 'argentina', 'armenie', 'australie', 'oostenrijk', 'azerbeidzjan',
+    'afghanistan', 'albanie', 'algerije', 'andorra', 'angola', 'antarctica', 'argentinie', 'armenie', 'australie', 'oostenrijk', 'azerbeidzjan',
     'bahama', 'bahrein', 'bangladesh', 'barbados', 'belarus', 'belgie', 'belize', 'benin', 'bhutan', 'bolivia',
     'bosnie', 'botswana', 'brazilie', 'brunei', 'bulgarije', 'cambodja', 'canada', 'chili', 'china', 'colombia',
     'congo', 'cuba', 'cyprus', 'denemarken', 'duitsland', 'ecuador', 'egypte', 'engeland', 'eritrea', 'estland',
@@ -97,7 +97,7 @@ const dutchWords = new Set([
     'wethouder', 'winkelier', 'zanger', 'zuster',
     
     // === VOORWERPEN (150 woorden) ===
-    'aardappelschilmes', 'auto', 'axe', 'bal', 'balkon', 'bank', 'bed', 'beker', 'bel', 'beurs',
+    'aardappelschilmes', 'asbak', 'auto', 'axe', 'bal', 'balkon', 'bank', 'bed', 'beker', 'bel', 'beurs',
     'beuzelarij', 'bezem', 'blik', 'bloem', 'bloempot', 'boek', 'bord', 'borstel', 'bril', 'brommer',
     'brug', 'bureau', 'bus', 'cadeau', 'camera', 'cd', 'computer', 'das', 'deken', 'deur',
     'doek', 'doos', 'douche', 'drank', 'droger', 'dvd', 'emmer', 'envelop', 'fiets', 'fles',
