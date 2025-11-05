@@ -9,10 +9,8 @@
     <link rel="apple-touch-icon" href="icons/icon-192.png">
     <meta name="theme-color" content="#02153f">
     
-    <!-- Nederlands woordenboek voor validatie -->
+    <!-- Nederlands woordenboek + categorie validatie -->
     <script src="words.js"></script>
-    
-    <!-- Categorie woordenlijsten (Fase 2) -->
     <script src="category-words.js"></script>
     <style>
         * {
@@ -42,8 +40,6 @@
             max-width: 360px;
             width: 95%;
             text-align: center;
-            max-height: 90vh;
-            overflow-y: auto;
         }
 
         /* Splash Screen */
@@ -324,6 +320,14 @@
             min-height: 0;
         }
 
+        .warning {
+            color: #f39c12;
+            font-weight: bold;
+            margin-top: 3px;
+            margin-bottom: 3px;
+            font-size: 0.8em;
+        }
+
         .hidden {
             display: none;
         }
@@ -435,7 +439,7 @@
         <!-- Info Screen -->
         <div id="infoScreen" class="hidden">
             <h1>📖 Speluitleg</h1>
-            <div style="text-align: left; padding: 10px; padding-bottom: 80px; line-height: 1.6; font-size: 0.9em;">
+            <div style="text-align: left; padding: 10px; line-height: 1.6; font-size: 0.9em;">
                 <h3>Hoe werkt Linko?</h3>
                 <p>• Bedenk een woord dat begint met de laatste letter van het vorige woord</p>
                 <p>• Het woord moet passen bij de opgegeven categorie</p>
@@ -500,6 +504,7 @@
 
             <input type="text" id="wordInput" placeholder="Type je woord..." autocomplete="off">
             <div class="error" id="errorMessage"></div>
+            <div class="warning" id="warningMessage"></div>
             
             <!-- Joker Display -->
             <div id="jokerDisplay" class="joker-display hidden">
@@ -555,9 +560,9 @@
         let timerInterval;
         let isJokerActive = false;
         let difficulty = 'easy';
-        let lifelineJokers = 0;  // Aantal beschikbare jokers (kunnen opstapelen)
-        let lastJokerEarnedAt = 0;  // Bij welke score de laatste joker verdiend is
-        let lastTurnWasJoker = false;  // Of de vorige beurt via joker was
+        let lifelineJokers = 0;
+        let lastJokerEarnedAt = 0;
+        let lastTurnWasJoker = false;
 
         // Hide splash screen after 2.5 seconds
         setTimeout(() => {
@@ -584,7 +589,6 @@
             updateDisplay();
             startTimer();
             
-            // Focus on input so keyboard appears immediately
             setTimeout(() => {
                 document.getElementById('wordInput').focus();
             }, 100);
@@ -610,9 +614,8 @@
             const categoryElement = document.getElementById('category');
             const categoryBox = categoryElement.parentElement;
             
-            // Add pulse animation
             categoryBox.classList.remove('pulse');
-            void categoryBox.offsetWidth; // Trigger reflow
+            void categoryBox.offsetWidth;
             categoryBox.classList.add('pulse');
             
             categoryElement.textContent = currentCategory;
@@ -650,9 +653,8 @@
             
             if (lifelineJokers > 0) {
                 jokerDisplay.classList.remove('hidden');
-                jokerIcons.textContent = '🎁'.repeat(lifelineJokers);
+                jokerIcons.textContent = '🎁'.repeat(lifelineJokers);
                 
-                // Als we niet een animatie moeten skippen, verwijder de earned styling
                 if (skipAnimation) {
                     jokerDisplay.classList.remove('joker-earned');
                 }
@@ -698,13 +700,11 @@
             let r, g, b;
             
             if (progress > 0.5) {
-                // Groen naar Geel
                 const localProgress = (progress - 0.5) * 2;
                 r = Math.round(46 + (251 - 46) * (1 - localProgress));
                 g = Math.round(204 + (251 - 204) * (1 - localProgress));
                 b = Math.round(113 + (9 - 113) * (1 - localProgress));
             } else {
-                // Geel naar Rood
                 const localProgress = progress * 2;
                 r = Math.round(251 + (231 - 251) * (1 - localProgress));
                 g = Math.round(216 + (76 - 216) * (1 - localProgress));
@@ -723,8 +723,10 @@
             const input = document.getElementById('wordInput');
             const word = input.value.trim().toLowerCase();
             const errorElement = document.getElementById('errorMessage');
+            const warningElement = document.getElementById('warningMessage');
             
             errorElement.textContent = '';
+            warningElement.textContent = '';
             
             if (!word) {
                 errorElement.textContent = '❌ Voer een woord in!';
@@ -732,14 +734,18 @@
                 return;
             }
             
-            // ✅ Check if word exists in Dutch dictionary
-            if (typeof isValidDutchWord === 'function' && !isValidDutchWord(word)) {
-                errorElement.textContent = '❌ Dit woord bestaat niet in het woordenboek!';
-                input.focus();
-                return;
+            // ✅ Check 1: Bestaat het woord in het woordenboek?
+            if (typeof isValidDutchWord === 'function') {
+                if (!isValidDutchWord(word)) {
+                    errorElement.textContent = '❌ Dit woord bestaat niet in het woordenboek!';
+                    input.focus();
+                    return;
+                }
+            } else {
+                console.warn('⚠️ Woordvalidatie (words.js) niet geladen!');
             }
             
-            // Check if word starts with correct letter (unless joker is active)
+            // ✅ Check 2: Begint het woord met de juiste letter?
             if (!isJokerActive) {
                 const requiredLetter = currentWord.slice(-1).toLowerCase();
                 if (word[0] !== requiredLetter) {
@@ -749,57 +755,49 @@
                 }
             }
             
-            // 🎯 Optionele categorie check (Fase 2 - Losjes model)
-            // Woord wordt altijd geaccepteerd, maar we loggen of het in de categorie lijst staat
-            if (typeof matchesCategory === 'function') {
-                if (!matchesCategory(word, currentCategory)) {
-                    // Woord staat NIET in categorie lijst, maar we accepteren het toch (losjes model)
-                    console.log(`ℹ️ "${word}" staat niet in onze ${currentCategory} lijst, maar wordt geaccepteerd`);
-                } else {
-                    // Woord staat in categorie lijst - perfect!
-                    console.log(`✅ "${word}" past bij ${currentCategory}`);
-                }
-            }
-            
-            // Check for duplicates (only in medium difficulty)
+            // ✅ Check 3: Is het woord al gebruikt? (alleen bij medium)
             if (difficulty === 'medium' && usedWords.includes(word)) {
                 errorElement.textContent = '❌ Dit woord is al gebruikt!';
                 input.focus();
                 return;
             }
             
-            // Word accepted!
+            // ⚠️ Check 4: Past het woord bij de categorie? (waarschuwing, geen blokkade)
+            if (typeof matchesCategory === 'function') {
+                if (!matchesCategory(word, currentCategory)) {
+                    warningElement.textContent = `⚠️ "${word}" staat niet in onze ${currentCategory} lijst, maar wordt geaccepteerd`;
+                    console.log(`ℹ️ Woord "${word}" niet in categorie "${currentCategory}", maar wel geaccepteerd`);
+                }
+            }
+            
+            // ✅ Woord geaccepteerd!
             currentWord = word;
             usedWords.push(word);
             turnCount++;
             input.value = '';
             
-            // Check if player earned a lifeline joker (every 5 words)
-            // Maar NIET als de vorige beurt via joker was (dan heb je de milestone niet "zelf" gehaald)
+            // Check joker verdienen (elke 5 woorden, maar NIET via joker)
             if (turnCount % 5 === 0 && !lastTurnWasJoker) {
                 lifelineJokers++;
                 lastJokerEarnedAt = turnCount;
                 showJokerEarned();
             }
             
-            // Reset lastTurnWasJoker (deze beurt was via handmatige invoer)
             lastTurnWasJoker = false;
             
-            // Check if this word ends with a difficult letter (triggers joker)
+            // Check voor letter-joker (X, Y, Q aan einde)
             isJokerActive = checkForJoker(word);
             
-            // New category
+            // Nieuwe categorie
             currentCategory = categories[Math.floor(Math.random() * categories.length)];
             
             updateDisplay();
             startTimer();
-            
-            // Keep focus on input so keyboard stays open
             input.focus();
         }
 
         function gameOver() {
-            // Check if player has a lifeline joker available
+            // Check voor levensjoker
             if (lifelineJokers > 0) {
                 useLifelineJoker();
                 return;
@@ -826,54 +824,45 @@
             const jokerDisplay = document.getElementById('jokerDisplay');
             const jokerIcons = document.getElementById('jokerIcons');
             
-            // Toon "JOKER VERDIEND!" melding
             jokerDisplay.classList.remove('hidden');
             jokerDisplay.classList.add('joker-earned');
-            jokerIcons.textContent = `🎁 JOKER VERDIEND!`;
+            jokerIcons.textContent = `🎁 JOKER VERDIEND!`;
             
-            // Na 2 seconden: verander naar joker iconen
             setTimeout(() => {
                 jokerDisplay.classList.remove('joker-earned');
-                jokerIcons.textContent = '🎁'.repeat(lifelineJokers);
+                jokerIcons.textContent = '🎁'.repeat(lifelineJokers);
             }, 2000);
         }
 
         function useLifelineJoker() {
-            lifelineJokers--;  // Gebruik een joker
-            lastTurnWasJoker = true;  // Markeer dat deze beurt via joker was
+            lifelineJokers--;
+            lastTurnWasJoker = true;
             
-            // Toon blauwe "joker gebruikt" animatie
             const jokerDisplay = document.getElementById('jokerDisplay');
             jokerDisplay.classList.add('joker-used');
             
-            // Verwijder de animatie na 800ms
             setTimeout(() => {
                 jokerDisplay.classList.remove('joker-used');
             }, 800);
             
-            // Show joker activation message with count
             const jokerMsg = document.getElementById('jokerMessage');
             const jokersLeft = lifelineJokers > 0 ? ` (${lifelineJokers} joker${lifelineJokers > 1 ? 's' : ''} over)` : '';
-            jokerMsg.textContent = `🎁 JOKER ACTIEF! Categorie verandert, beginletter blijft${jokersLeft}`;
+            jokerMsg.textContent = `🎁 JOKER ACTIEF! Categorie verandert, beginletter blijft${jokersLeft}`;
             jokerMsg.classList.remove('hidden');
             
-            // Change category but keep the same starting letter
             currentCategory = categories[Math.floor(Math.random() * categories.length)];
             
-            // Update display and restart timer
             updateDisplay();
             startTimer();
             
-            // Hide joker message after 3 seconds
             setTimeout(() => {
                 jokerMsg.classList.add('hidden');
             }, 3000);
             
-            // Focus on input
             document.getElementById('wordInput').focus();
         }
 
-        // Enter key functionality
+        // Enter key
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('wordInput').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {

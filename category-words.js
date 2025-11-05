@@ -1,236 +1,144 @@
-/**
- * Categorie Woordenlijsten voor Linko
- * Bevat woordenlijsten per categorie voor basis categorie-check
- * Losjes model: als woord niet in lijst staat, wordt het toch geaccepteerd
- */
+// Categorie Woordenlijsten voor Linko
+// Deze lijsten helpen bij het valideren of een woord bij een categorie past
 
 const categoryWords = {
-    'Dieren': [
-        'aal', 'aalscholver', 'aap', 'aardwolf', 'abdimstork', 'adelaar', 'adder', 'adoorn', 'ahornvlinder', 'albatros',
-        'algemeenduif', 'alligator', 'alpaca', 'amberkever', 'amerikaansehond', 'anemoonvis', 'anjervis', 'antilope', 'apeneter', 'arend',
-        'arowana', 'asp', 'avocet', 'axolotl', 'baardmees', 'baardvarken', 'baars', 'bamboerat', 'bandstaart', 'baviaan',
-        'beekjuffer', 'berberaap', 'berghoen', 'bergmarmot', 'berguil', 'bever', 'bidsprinkhaan', 'bij', 'bizon', 'blauwvinvis',
-        'bliek', 'blindevis', 'bloedegel', 'bok', 'boommarter', 'boomklever', 'boomkikker', 'boomslang', 'bosduif', 'bosmuis',
-        'bosuil', 'bosvogel', 'bot', 'brasem', 'bruinebeer', 'bruinevis', 'brulkikker', 'buidelrat', 'buidelwolf', 'bultrug',
-        'buizerd', 'cachalot', 'capibara', 'caracal', 'cavia', 'chimpansee', 'cicade', 'clownvis', 'cobra', 'cockatoo',
-        'condor', 'coyote', 'dalmatiër', 'damhert', 'dansmug', 'das', 'degenkrab', 'dier', 'dikhuid', 'dingo',
-        'dolfijn', 'doornhaai', 'doornslak', 'donkeruil', 'draaihals', 'draadworm', 'duif', 'duiker', 'duinmuis', 'dwerggeit',
-        'dwerguil', 'dwergvleermuis', 'eekhoorn', 'egel', 'egelskop', 'egelvis', 'ekster', 'eland', 'elektrapaling', 'emoe',
-        'emu', 'ernsthoen', 'fazant', 'flamingo', 'fret', 'gaai', 'gans', 'garnaal', 'gazelle', 'geit',
-        'gier', 'gierzwaluw', 'gnoe', 'goudhaantje', 'goudvis', 'grasmus', 'grizzly', 'groenling', 'grondel', 'grutto',
-        'guppy', 'haai', 'haan', 'haas', 'hamster', 'haring', 'havik', 'hert', 'hond', 'honingbij',
-        'honingdas', 'hop', 'horzel', 'huismus', 'hyena', 'ibis', 'ijsbeer', 'ijsvogel', 'inktvis', 'jak',
-        'jakhals', 'jaguar', 'kalkoen', 'kameleon', 'kanarie', 'kapucijnaap', 'karper', 'kat', 'kever', 'kikker',
-        'kip', 'koe', 'koekoek', 'kolibrie', 'komodovaraan', 'konijn', 'kooi', 'koornslang', 'korhoen', 'kraai',
-        'krab', 'krekel', 'krokodil', 'kuifmees', 'lam', 'lamantijn', 'leeuw', 'lepelaar', 'libel', 'lijster',
-        'luiaard', 'lynx', 'maanvis', 'maki', 'manenwolf', 'maraboe', 'marter', 'meerval', 'mees', 'mier',
-        'mol', 'molleneter', 'mug', 'muis', 'mus', 'nachtegaal', 'neushoorn', 'nijlpaard', 'octopus', 'oehoe',
-        'olifant', 'ooievaar', 'orka', 'otter', 'paling', 'panter', 'papegaai', 'parkiet', 'pauw', 'pekari',
-        'pelikaan', 'pinguin', 'piton', 'poema', 'poni', 'potvis', 'prairiehond', 'raaf', 'rat', 'ree',
-        'regenworm', 'reiger', 'rendier', 'rups', 'salamander', 'schaap', 'schildpad', 'schorpioen', 'seepaard', 'serval',
-        'sifaka', 'sijs', 'slak', 'slang', 'snip', 'snoek', 'spin', 'spreeuw', 'sprinkhaan', 'steenbok',
-        'steenmarter', 'steenuil', 'stekelbaars', 'steur', 'struisvogel', 'tapir', 'tijger', 'tijgerhaai', 'tonijn', 'torenvalk',
-        'tortel', 'trilspin', 'uil', 'valk', 'varken', 'vink', 'vis', 'visarend', 'vleermuis', 'vlo',
-        'vogelbekdier', 'vos', 'vraatkever', 'walrus', 'waterhoen', 'watersalamander', 'wezel', 'wildebeest', 'winterkoning', 'woelmuis',
-        'wolf', 'worm', 'yak', 'zalm', 'zebra', 'zeehond', 'zeekat', 'zeeleeuw', 'zeepaardje', 'zeeschildpad',
-        'zeeslak', 'zeester', 'zeevis', 'zeevogel', 'zeewolf', 'zilvermeeuw', 'zonnevis', 'zwaan', 'zwaluw', 'zwartkop',
-        'zwartstaartprairiehond', 'zwijn'
-    ],
+    'Dieren': new Set([
+        'aap', 'aalbes', 'aal', 'adelaar', 'alligator', 'alpaca', 'anaconda', 'anakonda', 'anemoon', 'antilope',
+        'arend', 'armadillo', 'baboon', 'baars', 'baarskop', 'beer', 'biber', 'bij', 'bison', 'blauwalg',
+        'boa', 'bok', 'boomkikker', 'buffel', 'capibara', 'capybara', 'cheetah', 'chimpansee', 'chinchilla', 'coyote',
+        'das', 'dier', 'dodo', 'dolfijn', 'duif', 'duiker', 'eekhoorn', 'egel', 'ekster', 'eland',
+        'emoe', 'flamingo', 'fret', 'gazelle', 'geit', 'gier', 'giraffe', 'gnoe', 'gorilla', 'haai',
+        'hagedis', 'hamster', 'haring', 'havik', 'hond', 'hyena', 'ibis', 'ijsbeer', 'impala', 'jaguar',
+        'kalf', 'kameel', 'kangaroo', 'kangoeroe', 'kat', 'kever', 'kip', 'kikker', 'koe', 'koala',
+        'koekoek', 'kolibrie', 'konijn', 'krab', 'kreeft', 'krokodil', 'lama', 'lammersgier', 'leeuw', 'leeuwerik',
+        'lemming', 'leguaan', 'luipaard', 'lynx', 'makreel', 'marmot', 'merel', 'mier', 'mol', 'muis',
+        'mus', 'nijlpaard', 'octopus', 'oehoe', 'olifant', 'orang-oetan', 'orca', 'otter', 'panda', 'papegaai',
+        'paard', 'pauw', 'pelikaan', 'pens', 'pinguïn', 'pinguin', 'poema', 'pony', 'python', 'rat',
+        'raaf', 'reiger', 'rendier', 'ribkwal', 'rif', 'roodborst', 'salamander', 'schildpad', 'schorpioen', 'slang',
+        'slak', 'specht', 'sprinkhaan', 'stier', 'tapir', 'tijger', 'uil', 'varken', 'valk',
+        'vis', 'vlieg', 'vlinder', 'vlo', 'vogel', 'vos', 'walrus', 'wesp', 'wolf', 'worm',
+        'zalm', 'zebra', 'zeehond', 'zeekoe', 'zwaluw'
+    ]),
     
-    'Landen/Steden': [
-        'afghanistan', 'albanië', 'algerije', 'amsterdam', 'andorra', 'angola', 'antwerpen', 'argentinië', 'armenië', 'arnhem',
-        'athene', 'australië', 'azerbeidzjan', 'bagdad', 'bahama', 'bahrein', 'baku', 'bangladesh', 'barbados', 'barcelona',
-        'basel', 'belgië', 'belize', 'benin', 'berlijn', 'bern', 'bhutan', 'boedapest', 'bolivia', 'bologna',
-        'bordeaux', 'bosnië', 'boston', 'botswana', 'bratislava', 'brazilië', 'brunei', 'brussel', 'bryssel', 'bucharest',
-        'buenosaires', 'bulgarije', 'burkinafaso', 'burundi', 'caïro', 'cambodja', 'cameroen', 'canada', 'capetown', 'chicago',
-        'chili', 'china', 'colombia', 'comoren', 'congo', 'copenhagen', 'costarica', 'croatië', 'cuba', 'cyprus',
-        'damascus', 'denemarken', 'denhaag', 'djibouti', 'dominica', 'dominicanenrepubliek', 'dubai', 'dublin', 'ecuador', 'edinburgh',
-        'egypte', 'eindhoven', 'eritrea', 'estland', 'ethiopië', 'fiji', 'filipijnen', 'finland', 'florence', 'frankrijk',
-        'frankfurt', 'gabon', 'gambia', 'geneve', 'gent', 'georgië', 'ghana', 'griekenland', 'groningen', 'guatemala',
-        'guinee', 'guyana', 'haïti', 'hamburg', 'helsinki', 'honduras', 'hongkong', 'hongarije', 'ierland', 'ijsland',
-        'india', 'indonesië', 'irak', 'iran', 'israël', 'italië', 'jamaica', 'jakarta', 'japan', 'jeruzalem',
-        'jordanië', 'kaapstad', 'kazachstan', 'kenia', 'kigali', 'kirgizië', 'kiribati', 'kopenhagen', 'krakau', 'kroatië',
-        'kuwait', 'laos', 'letland', 'libanon', 'liberia', 'libië', 'liechtenstein', 'lima', 'linde', 'lissabon',
-        'litouwen', 'londen', 'losangeles', 'luik', 'luxemburg', 'lyon', 'madagaskar', 'madrid', 'malawi', 'maldiven',
-        'maleisië', 'mali', 'malta', 'manchester', 'manilla', 'marokko', 'marseille', 'mauritanie', 'mexico', 'milaan',
-        'minsk', 'moldavië', 'monaco', 'mongolië', 'montenegro', 'moskou', 'mozambique', 'munchen', 'myanmar', 'namibië',
-        'napels', 'nederland', 'nepal', 'newyork', 'nicaragua', 'nice', 'nicosia', 'niger', 'nigeria', 'nieuwzeeland',
-        'noordmacedonië', 'noorwegen', 'oman', 'oostenrijk', 'oslo', 'ottawa', 'pakistan', 'palau', 'panama', 'paraguay',
-        'parijs', 'peru', 'polen', 'porto', 'portugal', 'praha', 'pristina', 'qatar', 'quebec', 'quito',
-        'reykjavik', 'rio', 'roemenië', 'rome', 'rotterdam', 'rusland', 'rwanda', 'sanfrancisco', 'santiago', 'sarajevo',
-        'saudiarabie', 'senegal', 'seoul', 'servië', 'seychellen', 'shanghai', 'sierraleone', 'singapore', 'slovakije', 'slovenië',
-        'sofia', 'somalië', 'soedan', 'spanje', 'srilanka', 'stockholm', 'stuttgart', 'suriname', 'swaziland', 'sydney',
-        'syrië', 'tadzjikistan', 'taipei', 'talinn', 'tanzania', 'tbilisi', 'teheran', 'thailand', 'togo', 'tokio',
-        'tonga', 'toronto', 'trinidad', 'tsjechië', 'tsjaad', 'tunisië', 'turkije', 'turkmenistan', 'uruguay', 'utrecht',
-        'valencia', 'vancouver', 'venetie', 'venezuela', 'verenigdestaten', 'verenigdkoninkrijk', 'vienna', 'vietnam', 'vilnius', 'warsaw',
-        'washington', 'wenen', 'witrusland', 'zagreb', 'zambia', 'zimbabwe', 'zuidafrika', 'zuidkorea', 'zuidsoedan', 'zurich',
-        'zweden', 'zwitserland'
-    ],
+    'Landen/Steden': new Set([
+        // Nederlandse steden
+        'aalsmeer', 'aalten', 'alkmaar', 'almelo', 'almere', 'amersfoort', 'amsterdam', 'apeldoorn', 'arnhem', 'assen',
+        'baarn', 'bergen', 'boxmeer', 'boxtel', 'breda', 'bussum', 'delft', 'delfzijl', 'denhaag', 'deventer',
+        'doetinchem', 'dordrecht', 'echt', 'ede', 'edam', 'eindhoven', 'emmen', 'enschede', 'goes', 'gouda',
+        'groningen', 'haarlem', 'harderwijk', 'heerlen', 'helmond', 'hengelo', 'hertogenbosch', 'hilversum', 'hoorn', 'ijmuiden',
+        'katwijk', 'leeuwarden', 'leiden', 'lelystad', 'maastricht', 'middelburg', 'nijmegen', 'oss', 'purmerend', 'roermond',
+        'roosendaal', 'rotterdam', 'schiedam', 'sittard', 'tilburg', 'utrecht', 'venlo', 'vlaardingen', 'vlissingen', 'zaandam',
+        'zeist', 'zoetermeer', 'zutphen', 'zwolle',
+        
+        // Belgische steden
+        'aalst', 'antwerpen', 'brugge', 'brussel', 'charleroi', 'gent', 'leuven', 'luik', 'mechelen', 'oostende',
+        
+        // Europese hoofdsteden
+        'amsterdam', 'andorra', 'athene', 'belgrado', 'berlijn', 'bern', 'bratislava', 'brussel', 'boekarest', 'boedapest',
+        'dublin', 'helsinki', 'kiev', 'kopenhagen', 'lissabon', 'londen', 'luxembourg', 'madrid', 'minsk', 'monaco',
+        'moskou', 'oslo', 'parijs', 'praag', 'riga', 'rome', 'sofia', 'stockholm', 'tallinn', 'tirana',
+        'vaduz', 'valletta', 'warschau', 'wenen', 'vilnius', 'zagreb',
+        
+        // Wereldsteden
+        'bangkok', 'barcelona', 'beijing', 'delhi', 'dubai', 'istanbul', 'kaapstad', 'kairo', 'losangeles', 'melbourne',
+        'mexico', 'miami', 'mumbai', 'newyork', 'peking', 'rio', 'seoul', 'shanghai', 'singapore', 'sydney',
+        'tokyo', 'toronto', 'washington',
+        
+        // Landen
+        'afghanistan', 'albanie', 'algerije', 'andorra', 'angola', 'argentina', 'armenie', 'australie', 'oostenrijk', 'azerbeidzjan',
+        'bahama', 'bahrein', 'bangladesh', 'barbados', 'belarus', 'belgie', 'belize', 'benin', 'bhutan', 'bolivia',
+        'bosnie', 'botswana', 'brazilie', 'brunei', 'bulgarije', 'cambodja', 'canada', 'chili', 'china', 'colombia',
+        'congo', 'cuba', 'cyprus', 'denemarken', 'duitsland', 'ecuador', 'egypte', 'engeland', 'eritrea', 'estland',
+        'ethiopie', 'fiji', 'filipijnen', 'finland', 'frankrijk', 'gabon', 'gambia', 'georgie', 'ghana', 'griekenland',
+        'guatemala', 'guinea', 'guyana', 'haiti', 'honduras', 'hongarije', 'ierland', 'ijsland', 'india', 'indonesie',
+        'irak', 'iran', 'israel', 'italie', 'ivoorkust', 'jamaica', 'japan', 'jemen', 'jordanie', 'kameroen',
+        'kazachstan', 'kenia', 'kroatie', 'koeweit', 'laos', 'letland', 'libanon', 'liberia', 'libie', 'litouwen',
+        'luxemburg', 'macedonie', 'madagaskar', 'maleisie', 'mali', 'malta', 'marokko', 'mexico', 'moldova', 'monaco',
+        'mongolie', 'montenegro', 'mozambique', 'myanmar', 'namibie', 'nepal', 'nederland', 'nicaragua', 'niger', 'nigeria',
+        'noorwegen', 'oekraine', 'oman', 'pakistan', 'panama', 'paraguay', 'peru', 'polen', 'portugal', 'qatar',
+        'roemenie', 'rusland', 'rwanda', 'samoa', 'saoedi', 'schotland', 'senegal', 'servie', 'singapore', 'slovakije',
+        'slovenie', 'somalie', 'spanje', 'soedan', 'suriname', 'syrië', 'taiwan', 'tanzania', 'thailand', 'togo',
+        'tsjechie', 'tunesie', 'turkije', 'uganda', 'uruguay', 'venezuela', 'vietnam', 'wales', 'wit-rusland', 'zambia',
+        'zimbabwe', 'zweden', 'zwitserland', 'zuid-afrika', 'zuid-korea', 'andalusie', 'antillen', 'aruba', 'curacao'
+    ]),
     
-    'Voedsel': [
-        'aardappel', 'abrikoos', 'advocaat', 'amandel', 'ananas', 'anijs', 'appel', 'appelmoes', 'appelsap', 'appeltaart',
-        'asperge', 'aubergine', 'avocado', 'baklava', 'banaan', 'basilicum', 'biefstuk', 'bier', 'bieslook', 'bitterbal',
-        'bladerdeeg', 'blauwebessen', 'bloem', 'bloemkool', 'boerenkool', 'bosbessen', 'boter', 'boterham', 'braadworst', 'bramen',
-        'brandy', 'bread', 'brie', 'broccoli', 'brood', 'broodje', 'bruinebonen', 'cake', 'cashewnoten', 'champagne',
-        'champignon', 'chips', 'chocola', 'citroen', 'citroensap', 'cocktail', 'cognac', 'cola', 'cornflakes', 'courgette',
-        'crackers', 'croissant', 'curry', 'dadel', 'dille', 'donut', 'druif', 'ei', 'eiersalade', 'erwten',
-        'falafel', 'feta', 'framboos', 'friet', 'fruit', 'gans', 'garnaal', 'geitenkass', 'gehakt', 'gember',
-        'gin', 'goulash', 'granola', 'groente', 'groentesoep', 'guacamole', 'ham', 'hamburger', 'hazelnoot', 'honing',
-        'honing', 'hotdog', 'huzarensalade', 'ijs', 'ijsthee', 'jam', 'jenever', 'jus', 'kaas', 'kalkoen',
-        'kaneel', 'karamel', 'karnemelk', 'kastanje', 'ketchup', 'kip', 'kippenbout', 'kiwi', 'knoflook', 'koek',
-        'koekje', 'koffie', 'kokos', 'komijn', 'komkommer', 'kool', 'koolraap', 'koriander', 'krab', 'kroket',
-        'kruiden', 'kwark', 'lamsvlees', 'lasagne', 'latte', 'laurier', 'lever', 'limonade', 'linzen', 'macaroni',
-        'maïs', 'mandarijn', 'mango', 'margarine', 'marmelade', 'marshmallow', 'mayonaise', 'melk', 'meloen', 'mie',
-        'mint', 'mosterd', 'mozzarella', 'muesli', 'nasi', 'nectarine', 'nootmuskaat', 'noten', 'olie', 'olijf',
-        'olijfolie', 'omelet', 'ontbijtgranen', 'oregano', 'paddenstoel', 'paella', 'pannenkoek', 'paprika', 'pasta', 'patat',
-        'patatje', 'peer', 'peper', 'pepermunt', 'perzik', 'peterselie', 'piccalilly', 'pinda', 'pindakaas', 'pizza',
-        'pompoen', 'popcorn', 'prei', 'pruim', 'quinoa', 'rabarber', 'radijs', 'ratatouille', 'ravioli', 'rode-biet',
-        'rodebes', 'rodedrager', 'roerei', 'room', 'rosbief', 'rucola', 'rum', 'salade', 'salami', 'salie',
-        'salsa', 'sandwich', 'sap', 'sardine', 'satésaus', 'scampi', 'selderie', 'sesamzaad', 'sinaasappel', 'sjalot',
-        'sla', 'slagroom', 'slak', 'snoep', 'soep', 'soja', 'sorbet', 'spaghetti', 'speculaas', 'spek',
-        'sperzieboon', 'spinazie', 'sprits', 'stamp', 'steak', 'stroop', 'stroopwafel', 'suiker', 'sushi', 'taart',
-        'taco', 'tapas', 'tartaar', 'thee', 'tijm', 'tiramisu', 'tomaat', 'tomatensaus', 'tonijn', 'tortilla',
-        'ui', 'vanille', 'varkensvlees', 'vijg', 'vis', 'vla', 'vlees', 'vodka', 'wafels', 'walnoot',
-        'water', 'watermeloen', 'wijn', 'witlof', 'wortel', 'wrap', 'yoghurt', 'zalm', 'zout', 'zuurkool'
-    ],
+    'Voedsel': new Set([
+        'aardappel', 'abrikoos', 'advocaat', 'ananas', 'andijvie', 'anijs', 'appel', 'appelmoes', 'asperge', 'aubergine',
+        'avocado', 'bacon', 'bagel', 'baguette', 'banaan', 'biefstuk', 'bier', 'bieslook', 'bitterbal', 'bloemkool',
+        'boerenkool', 'bonen', 'boter', 'bouillon', 'braadworst', 'brood', 'brownie', 'broodje', 'cake', 'cappuccino',
+        'cashew', 'champignon', 'chips', 'chocola', 'citroen', 'cocktail', 'cola', 'courgette', 'croissant', 'curry',
+        'druif', 'eend', 'erwt', 'espresso', 'falafel', 'feta', 'filetstuk', 'forel', 'framboos', 'friet',
+        'gehakt', 'gerst', 'gist', 'granola', 'groente', 'guave', 'ham', 'hamburger', 'haver', 'hazelnoot',
+        'honing', 'hummus', 'ijs', 'jam', 'jenever', 'jus', 'kaas', 'kabeljauw', 'kalkoen', 'kaneel',
+        'karnemelk', 'kastanje', 'kebab', 'kersen', 'ketchup', 'kip', 'kiwi', 'knoflook', 'koffie', 'kokos',
+        'komijn', 'komkommer', 'kool', 'koriander', 'kroket', 'kruiden', 'kwark', 'lamsvlees', 'lasagne', 'latte',
+        'limoen', 'limonade', 'linzen', 'macaroni', 'maiskolf', 'mandarijn', 'mango', 'margarine', 'marshmallow', 'mayonaise',
+        'melk', 'meloen', 'muesli', 'munt', 'nasi', 'nectarine', 'noga', 'noodles', 'nootmuskaat', 'olijf',
+        'omelet', 'paprika', 'pasta', 'pastei', 'patat', 'peer', 'peper', 'perzik', 'peterselie', 'pindakaas',
+        'pizza', 'popcorn', 'pompoen', 'prei', 'pruim', 'pudding', 'quiche', 'rabarber', 'radijs', 'rijst',
+        'risi', 'roerei', 'roomijs', 'rosé', 'rundvlees', 'saffaan', 'salade', 'salami', 'sandwich', 'sate',
+        'saus', 'selderie', 'sinaasappel', 'sla', 'snoep', 'soep', 'soja', 'spaghetti', 'spek', 'spinazie',
+        'spruitjes', 'steak', 'suiker', 'sushi', 'taco', 'taart', 'thee', 'toast', 'tomaat', 'tonijn',
+        'ui', 'vanille', 'varkensvlees', 'vijg', 'vis', 'vla', 'vodka', 'wafel', 'walnoot', 'water',
+        'watermeloen', 'wijn', 'witlof', 'wortel', 'worst', 'yoghurt', 'zalm', 'zout'
+    ]),
     
-    'Beroepen': [
-        'accountant', 'accountmanager', 'acquisiteur', 'acteur', 'administrateur', 'advocaat', 'advocaatstagiair', 'afdelingshoofd', 'agent', 'agronoom',
-        'ambassadeur', 'anesthesioloog', 'animator', 'apotheker', 'archeoloog', 'architect', 'archiefbeheerder', 'arts', 'assuradeur', 'astronaut',
-        'astronoom', 'auditor', 'autocoureur', 'autotechnicus', 'bakker', 'banketbakker', 'bankier', 'barbier', 'barista', 'bediende',
-        'begeleider', 'beheerder', 'beheercontroller', 'beeldendkunstenaar', 'beeldhouwer', 'beiaardier', 'belastingspecialist', 'belegger', 'beleidsadviseur', 'belichter',
-        'bemiddelaar', 'beroepschauffeur', 'beroepsmilitair', 'beveiligingsmedewerker', 'bewindvoerder', 'bibliothecaris', 'bioloog', 'bloemist', 'boekbinder', 'boekdrukker',
-        'boekhouder', 'boer', 'boogmaker', 'boomklever', 'boswachter', 'bouwkundige', 'bouwkundigtekenaar', 'brandweerman', 'brandweervrouw', 'broodbakker',
-        'buschauffeur', 'businessanalist', 'callcentermedewerker', 'cameraman', 'carrosseriebouwer', 'cartograaf', 'cateringmedewerker', 'chauffeur', 'chemicus', 'chirurg',
-        'coach', 'communicatieadviseur', 'componist', 'concierge', 'constructeur', 'consultant', 'controller', 'controleur', 'copywriter', 'coureur',
-        'curator', 'dansdocent', 'datamanager', 'decaan', 'decorateur', 'deurwaarder', 'dierenarts', 'dierenverzorger', 'directeur', 'docent',
-        'docenttrainer', 'dokter', 'dominee', 'douanier', 'drammer', 'drukker', 'drummer', 'duurzaamheidsadviseur', 'econoom', 'elektricien',
-        'employé', 'energiedeskundige', 'engineer', 'entertainer', 'etaleur', 'eventmanager', 'facilitairmedewerker', 'fietsenmaker', 'filmmaker', 'filosoof',
-        'financieeladviseur', 'fiscaaljurist', 'fotograaf', 'freelancer', 'functionaris', 'fysiotherapeut', 'gastheer', 'gastvrouw', 'geoloog', 'gerontoloog',
-        'gespreksleider', 'gids', 'glaszetter', 'goudsmid', 'graficus', 'grafischontwerper', 'grimeur', 'groenteboer', 'gynaecoloog', 'handelaar',
-        'handlanger', 'havenmeester', 'heier', 'herder', 'historicus', 'horecamanager', 'horecamedewerker', 'hovenier', 'hradviseur', 'huisarts',
-        'huishoudster', 'hypotheekadviseur', 'ictanalist', 'ictbeheerder', 'ictspecialist', 'illustrator', 'immigrantencoach', 'ingenieur', 'inkoper', 'innovatiemanager',
-        'inspecteur', 'installateur', 'instructeur', 'interieurontwerper', 'journalist', 'juridischmedewerker', 'jurist', 'juwelier', 'kamperfoelie', 'kantonnier',
-        'kapper', 'kassier', 'kelner', 'keramist', 'keukenhulp', 'kinderarts', 'klantadviseur', 'klantmanager', 'kleermaker', 'klokkenmaker',
-        'koetsier', 'koerier', 'kok', 'kokkin', 'koster', 'kunstenaar', 'kwaliteitsmanager', 'laborant', 'laboratoriumtechnicus', 'landbouwer',
-        'landmeter', 'leidinggevende', 'leerkracht', 'leraar', 'liftmonteur', 'logopedist', 'loodgieter', 'machinist', 'magazijnmedewerker', 'magistraat',
-        'makelaar', 'manager', 'marinier', 'marketeer', 'marktkoopman', 'matroos', 'medewerker', 'melkboer', 'metselaar', 'meubelmaker',
-        'missionaris', 'model', 'moleculairbioloog', 'monteur', 'muziekdocent', 'muzikant', 'nachtwaker', 'nagelstylist', 'neuroloog', 'notaris',
-        'officier', 'onderwijzer', 'onderzoeker', 'ontwerper', 'oogarts', 'opleider', 'operator', 'opticien', 'opzichter', 'orthodontist',
-        'orthopedagoog', 'ouderling', 'parfumist', 'parkbeheerder', 'parkeerwachter', 'pastoor', 'pedagoog', 'pedicure', 'performer', 'persvoorlichter',
-        'piloot', 'planner', 'planoloog', 'ploegbaas', 'podotherapeut', 'poelier', 'politicagent', 'politicoloog', 'postbode', 'presentator',
-        'priester', 'productmanager', 'proefleider', 'programmeur', 'projectleider', 'psycholoog', 'psychotherapeut', 'raadgever', 'radioloog', 'radiopresentator',
-        'rechter', 'receptionist', 'rechercheur', 'redacteur', 'revalidatietherapeut', 'rijinstructeur', 'roeier', 'salesmanager', 'schilder', 'schilderes',
-        'schoenmaker', 'schoonheidsspecialist', 'schoonmaker', 'schooldirecteur', 'schrijver', 'secretaresse', 'servicemonteur', 'sjouwer', 'slager', 'slijter',
-        'slotenmaker', 'sociaalwerker', 'softwareontwikkelaar', 'soldaat', 'sommelier', 'stedenbouwkundige', 'steward', 'stoffeerder', 'straatmaker', 'stucadoor',
-        'studieadviseur', 'stuntman', 'systeembeheerder', 'tandarts', 'tandtechnicus', 'tapijtwever', 'taxichauffeur', 'teamleider', 'technicus', 'technischtekenaar',
-        'tekenaar', 'telemarketeer', 'telefonist', 'theatermaker', 'therapeut', 'timmerman', 'toerismeadviseur', 'toeristengids', 'toetsenist', 'toneelspeler',
-        'trainer', 'trainingsacteur', 'tuinarchitect', 'tuinman', 'typist', 'uitgever', 'uitvaartleider', 'uitvinder', 'uitvoerder', 'uitzendconsulent',
-        'vakman', 'verkoopadviseur', 'verkoopmedewerker', 'verloskundige', 'verpleger', 'verpleegkundige', 'verpleegster', 'vertaler', 'vervoerder', 'verzamelaar',
-        'verzekeringsadviseur', 'verzorger', 'videoeditor', 'visser', 'vliegenlegger', 'vliegtuigmonteur', 'voedingsdeskundige', 'voeger', 'voetballer', 'voorlichter',
-        'vormgever', 'vrachtwagenchauffeur', 'wachtmeester', 'wagenmaker', 'webdesigner', 'weerman', 'werkvoorbereider', 'winkelbediende', 'winkelier', 'woonconsulent',
-        'woondeskundige', 'wordingkundige', 'zager', 'zanger', 'zeebioloog', 'zeeman', 'zeilmaker', 'zelfstandige', 'ziekenverzorger', 'ziekenhuisarts',
-        'zilverwerker', 'zoöloog', 'zorgverlener', 'zweminstructeur', 'zwemmer'
-    ],
+    'Beroepen': new Set([
+        'accountant', 'acteur', 'advocaat', 'agent', 'apotheker', 'architect', 'arts', 'astronaut', 'bakker', 'barman',
+        'beeldhouwen', 'behanger', 'bibliothecaris', 'boekhouder', 'boer', 'bouwvakker', 'brandweerman', 'burgemeester', 'chauffeur', 'chef',
+        'chirurg', 'coach', 'columnist', 'conducteur', 'conciërge', 'danser', 'deurwaarder', 'dichter', 'directeur', 'dokter',
+        'dominee', 'drogist', 'editor', 'elektricien', 'fotograaf', 'fysiotherapeut', 'gids', 'gitarist', 'glazenwasser', 'graficus',
+        'hardloper', 'horecamedewerker', 'hovenier', 'imker', 'ingenieur', 'journalist', 'juwelier', 'kapper', 'kassiere', 'kok',
+        'koning', 'kunstenaar', 'laborant', 'lasser', 'leraar', 'loodgieter', 'makelaar', 'masseur', 'manager', 'mechanicien',
+        'medewerker', 'metselaar', 'militair', 'minister', 'monteur', 'muzikant', 'notaris', 'opzichter', 'orthopedagoog', 'piloot',
+        'politieagent', 'portier', 'postbode', 'predikant', 'presentator', 'prins', 'professor', 'psycholoog', 'rechter', 'redacteur',
+        'reisleider', 'reparateur', 'schilder', 'schrijver', 'secretaresse', 'slager', 'soldaat', 'stewardess', 'student', 'stylist',
+        'tandarts', 'taxichauffeur', 'technicus', 'timmerman', 'trainer', 'tuinman', 'verpleger', 'vertegenwoordiger', 'vrachtwagenchauffeur', 'wegenbouwer',
+        'wethouder', 'winkelier', 'zanger', 'zuster'
+    ]),
     
-    'Voorwerpen/Objecten': [
-        'aardbol', 'aansteker', 'aardewerk', 'afstandsbediening', 'afwasborstel', 'afzuigkap', 'agenda', 'alarm', 'anker', 'antenne',
-        'armband', 'asbak', 'auto', 'badhanddoek', 'badjas', 'bakpan', 'bal', 'balans', 'balpen', 'bank',
-        'batterij', 'bed', 'beeldscherm', 'behangborstel', 'beker', 'bel', 'bestek', 'bezem', 'blik', 'blikopener',
-        'boek', 'boekenkast', 'boor', 'boormachine', 'bord', 'borstel', 'brievenbus', 'bril', 'brilhoes', 'bureaulamp',
-        'bureaustoel', 'camera', 'camerastatief', 'capsule', 'cd', 'centrifuge', 'computer', 'computermuis', 'deken', 'deur',
-        'deurbel', 'deurklink', 'diaprojector', 'dobbelsteen', 'doek', 'doos', 'dop', 'draagtas', 'drankglas', 'drumstel',
-        'emmer', 'envelop', 'fiets', 'fles', 'flesopener', 'fluit', 'fohn', 'fotocamera', 'fotolijst', 'garde',
-        'gereedschap', 'gieter', 'gitaar', 'glas', 'glaswerk', 'glijbaan', 'gloeilamp', 'gordijn', 'grijper', 'grasmaaier',
-        'hamer', 'handdoek', 'handschoen', 'handvat', 'helm', 'hengel', 'hoes', 'horloge', 'jas', 'kaars',
-        'kaart', 'kaasschaaf', 'kabel', 'kan', 'kast', 'kastdeur', 'ketting', 'keukenmes', 'kist', 'klavier',
-        'klok', 'knop', 'koektrommel', 'koelkast', 'koffer', 'kom', 'kompas', 'kooi', 'kookboek', 'kookplaat',
-        'krijt', 'kruk', 'kussen', 'kwast', 'ladder', 'lade', 'lamp', 'lantaarn', 'laptop', 'laptophoes',
-        'lepel', 'lichtknop', 'lijm', 'liniaal', 'loodlijn', 'loper', 'mand', 'mat', 'mes', 'microfoon',
-        'mixer', 'mobiel', 'mok', 'monitor', 'motor', 'munt', 'muntstuk', 'naaimachine', 'naald', 'nagelschaar',
-        'nagelvijl', 'notitieboek', 'notitieblok', 'oplader', 'oven', 'pak', 'pallet', 'pan', 'paperclip', 'paraplu',
-        'parfumfles', 'pedaalemmer', 'pen', 'penhouder', 'piano', 'picknickmand', 'pincet', 'plaatschaar', 'plank', 'plant',
-        'plasticbeker', 'plint', 'poort', 'portemonnee', 'poster', 'postzegel', 'pot', 'potje', 'potlood', 'presentatiebord',
-        'printer', 'prothese', 'puzzel', 'raam', 'raamkozijn', 'radio', 'rek', 'reistas', 'ritssluiting', 'rolgordijn',
-        'rolmaat', 'rugzak', 'ruit', 'schaal', 'schaar', 'schakelaar', 'scheermes', 'schep', 'schepnet', 'schild',
-        'schilderij', 'schoen', 'schoenlepel', 'schroef', 'schroefboormachine', 'schroevendraaier', 'schroefmoer', 'schuim', 'schuurpapier', 'sierkussen',
-        'sierpot', 'sleutel', 'sneeuwbal', 'snijplank', 'soapdispenser', 'sok', 'spatel', 'spiegel', 'spiegelkast', 'spijker',
-        'spin', 'spoelbak', 'stang', 'steekwagen', 'stekker', 'stempel', 'stift', 'stoelpoten', 'stoel', 'stofzuiger',
-        'stok', 'stopcontact', 'stopnaald', 'stropdas', 'tablet', 'tafel', 'tas', 'telefoon', 'televisie', 'tent',
-        'theepot', 'thermos', 'thermometer', 'tissue', 'toetsenbord', 'toiletborstel', 'toiletrol', 'tong', 'touw', 'trechter',
-        'trekkoord', 'trouwring', 'vaas', 'vaatdoek', 'vaatwasser', 'veiligheidsspeld', 'verfkwast', 'vergrootglas', 'verrekijker', 'vijl',
-        'viltstift', 'vingerhoed', 'vislijn', 'vlag', 'vloerkleed', 'voedingskabel', 'vork', 'vrachtwagen', 'wasbak', 'wasmachine',
-        'wasmand', 'waterkoker', 'waterfles', 'waterpomp', 'weekplanner', 'weegschaal', 'wekker', 'werkbank', 'werktuig', 'whisk',
-        'wiel', 'wijnglas', 'wimpel', 'winkelmand', 'wip', 'wipstoel', 'wisselstekker', 'witbord', 'wok', 'wokkoker',
-        'zakdoek', 'zaklamp', 'zeep', 'zeepbak', 'zeepschaal', 'zeil', 'zeilboot', 'zelfie', 'zetel', 'zilverwerk',
-        'zitzak', 'zoemer', 'zoldertrap', 'zonnebril', 'zonnepaneel'
-    ],
+    'Voorwerpen': new Set([
+        'aardappelschilmes', 'auto', 'axe', 'bal', 'balkon', 'bank', 'bed', 'beker', 'bel', 'beurs',
+        'beuzelarij', 'bezem', 'blik', 'bloem', 'bloempot', 'boek', 'bord', 'borstel', 'bril', 'brommer',
+        'brug', 'bureau', 'bus', 'cadeau', 'camera', 'cd', 'computer', 'das', 'deken', 'deur',
+        'doek', 'doos', 'douche', 'drank', 'droger', 'dvd', 'emmer', 'envelop', 'fiets', 'fles',
+        'fluitketel', 'fornuis', 'foto', 'glas', 'handschoen', 'hamer', 'hek', 'helm', 'hoed', 'horloge',
+        'huis', 'jas', 'kachel', 'kaars', 'kaft', 'kal', 'kam', 'kan', 'kano', 'kast',
+        'ketting', 'keuken', 'kist', 'kleed', 'klok', 'knie', 'knoop', 'koffer', 'kom', 'kraan',
+        'krat', 'kruk', 'kuip', 'lamp', 'laptop', 'liniaal', 'lucifer', 'map', 'matras', 'mes',
+        'mok', 'muur', 'naald', 'net', 'notitieblok', 'oven', 'pan', 'papier', 'paraplu', 'pen',
+        'piano', 'pijp', 'pilaar', 'plant', 'plank', 'plat', 'platen', 'portemonnee', 'pot', 'printer',
+        'radio', 'raam', 'rek', 'ring', 'rooster', 'rugzak', 'schaaf', 'schaal', 'schaap', 'schaar',
+        'schaats', 'schakel', 'schep', 'scherm', 'schoen', 'schommel', 'schort', 'schroef', 'schuur', 'slee',
+        'sleutel', 'smartphone', 'snaar', 'sneeuwbal', 'snoer', 'sofa', 'spiegel', 'spijker', 'spons', 'stoel',
+        'stok', 'stofzuiger', 'tafel', 'tang', 'tas', 'telefoon', 'televisie', 'tent', 'theelepel',
+        'toren', 'trampoline', 'trap', 'vaas', 'veer', 'vel', 'venster', 'verf', 'veter', 'vlag',
+        'vloer', 'vork', 'wasmachine', 'wc', 'wieg', 'wiel', 'zaag', 'zak', 'zeep', 'zonnebril'
+    ]),
     
-    'Planten/Bloemen': [
-        'abrikozenboom', 'acacia', 'adderwortel', 'agave', 'ahornvlinder', 'akelei', 'akkerbloem', 'akkerdistel', 'akkerklokje', 'akkerleeuwenbek',
-        'akkerwinde', 'aloë', 'alsem', 'alstroemeria', 'amandelboom', 'amarant', 'anemoon', 'anijs', 'anjer', 'anjerplant',
-        'appelbloesem', 'appelboom', 'appelmunt', 'aralia', 'aronskelk', 'aster', 'asterplant', 'azalea', 'azijnboom', 'bamboe',
-        'bamboeblad', 'basilicum', 'basilicumplant', 'beuk', 'beukenboom', 'bietenplant', 'blaasjeskruid', 'bladmos', 'bladspin', 'blauwgras',
-        'blauweregen', 'blauwklokje', 'bloeiwijze', 'bloem', 'bloemknop', 'bloesem', 'boerenwormkruid', 'boterbloem', 'braam', 'braamstruik',
-        'brandnetel', 'brem', 'bremstruik', 'bromelia', 'buddleja', 'buxus', 'buxusplant', 'cactus', 'cactussoort', 'calla',
-        'camelia', 'campanula', 'ceder', 'cederboom', 'chrysant', 'chrysantbloem', 'cichorei', 'cilantro', 'citroenmelisse', 'citroengras',
-        'citroenverbena', 'clivia', 'cocosplant', 'cornus', 'cosmos', 'cotoneaster', 'cyclaam', 'cyclamen', 'dadelpalm', 'dahlia',
-        'daslook', 'den', 'denneboom', 'distel', 'distelsoort', 'dotterbloem', 'dotterplant', 'drakenbloedboom', 'duindoorn', 'duizendblad',
-        'eik', 'eikenboom', 'eikvaren', 'engelwortel', 'enkianthus', 'erwtenplant', 'es', 'esdoorn', 'esparcette', 'fatsia',
-        'fuchsia', 'gardenia', 'gemberplant', 'gentiaan', 'geranium', 'gerbera', 'gierstgras', 'ginseng', 'gladiool', 'goudbloem',
-        'goudsbloem', 'gras', 'grasplant', 'hazelaar', 'heester', 'heide', 'heideplant', 'helianthus', 'helichrysum', 'hepatica',
-        'herfstaster', 'hertshooi', 'hibiscus', 'hop', 'hortensia', 'hulst', 'hulstblad', 'hyacint', 'iris', 'jasmijn',
-        'jonquille', 'judasboom', 'judaspenning', 'kamille', 'kamperfoelie', 'kaneelboom', 'kapucijner', 'kastanjeboom', 'kattenkruid', 'kersenbloesem',
-        'kersenboom', 'klaproos', 'klaver', 'klimop', 'knoopkruid', 'korenbloem', 'koriander', 'krokus', 'kruid', 'lavendel',
-        'leeuwenbek', 'lelie', 'lelietjesvan dalen', 'linde', 'lotus', 'magnolia', 'maïsplant', 'madelief', 'madeliefje', 'malva',
-        'mangoplant', 'margriet', 'marjolein', 'meidoorn', 'mimosa', 'mint', 'mos', 'munt', 'muurbloem', 'narcis',
-        'notenboom', 'olijfboom', 'orchidee', 'orchis', 'oregano', 'paardenbloem', 'palm', 'passiebloem', 'peperplant', 'perenboom',
-        'peterselie', 'phlox', 'pijlkruid', 'pijpbloem', 'pioen', 'pioenroos', 'plataan', 'pompoenplant', 'primula', 'pruimenboom',
-        'radijsplant', 'rapenplant', 'regenboogbloem', 'ridderspoor', 'roos', 'rozemarijn', 'salie', 'sandrakboom', 'schefflera', 'siererwt',
-        'sintjanskruid', 'sla', 'sleutelbloem', 'spirea', 'spinnenplant', 'spruitkool', 'stamroos', 'steenbreek', 'stokroos', 'strobloem',
-        'struik', 'sumak', 'sunflower', 'tamme kastanje', 'tarwe', 'teunisbloem', 'tijm', 'tulp', 'vaantjesboom', 'varen',
-        'vijg', 'vijgenboom', 'viool', 'viooltje', 'vlier', 'vogelmelk', 'volkameriaan', 'waterlelie', 'weidebloem', 'weidegras',
-        'weegbree', 'wilg', 'winterakoniet', 'witteklaver', 'wolfsmelk', 'zandraket', 'zegge', 'zeekraal', 'zevenblad', 'zonnebloem',
-        'zonnehoed', 'zuring'
-    ]
+    'Planten/Bloemen': new Set([
+        'aalbes', 'aardbei', 'acacia', 'agave', 'aloe', 'amaryllis', 'ananas', 'anjer', 'appelboom', 'aster',
+        'azalea', 'bamboe', 'banaan', 'begonia', 'berk', 'bernagie', 'bes', 'beuk', 'blauweregen', 'bloem',
+        'boom', 'bougainville', 'braam', 'cactus', 'camelia', 'cannabis', 'chrysant', 'citroen', 'clematis', 'cosmos',
+        'cyclaam', 'dahlia', 'distel', 'edelweiss', 'eik', 'els', 'ficus', 'framboos', 'freesia', 'fuchsia',
+        'gardenia', 'geranium', 'gerbera', 'gras', 'heide', 'heester', 'hibiscus', 'hortensia', 'hulst', 'hyacint',
+        'iris', 'jasmijn', 'jeneverbes', 'kamperfoelie', 'kastanje', 'kers', 'klimop', 'krokus', 'laurier', 'lavendel',
+        'lelie', 'linde', 'lotus', 'magnolia', 'maretak', 'margriet', 'meidoorn', 'mimosa', 'mos', 'narcis',
+        'netel', 'olijf', 'orchidee', 'palm', 'paardenbloem', 'papaver', 'petunia', 'pijnboom', 'plant', 'populier',
+        'primula', 'riet', 'rododendron', 'roos', 'rozen', 'salie', 'selder', 'sering', 'sleutelbloem', 'sneeuwklokje',
+        'spar', 'struik', 'taxus', 'thee', 'thuya', 'tijm', 'tomaat', 'tulp', 'varen', 'vergeetmijniet',
+        'viooltje', 'vlier', 'wilg', 'yucca', 'zonnebloem'
+    ])
 };
 
-/**
- * Check of een woord past bij de opgegeven categorie
- * @param {string} word - Het te checken woord
- * @param {string} category - De categorie
- * @returns {boolean} - True als woord in categorie lijst staat, anders false
- */
+// Controleer of woord bij categorie past
 function matchesCategory(word, category) {
-    // Als categorie niet bestaat, return false
-    if (!categoryWords[category]) {
-        return false;
-    }
-    
-    // Check of woord in de lijst staat (case-insensitive)
-    return categoryWords[category].includes(word.toLowerCase().trim());
+    const normalizedWord = word.toLowerCase();
+    return categoryWords[category]?.has(normalizedWord) || false;
 }
 
-/**
- * Optioneel: Haal alle woorden op voor een categorie (voor debugging)
- * @param {string} category - De categorie
- * @returns {Array} - Array met woorden of lege array
- */
-function getCategoryWords(category) {
-    return categoryWords[category] || [];
-}
-
-/**
- * Optioneel: Tel hoeveel woorden er in een categorie zitten
- * @param {string} category - De categorie
- * @returns {number} - Aantal woorden
- */
-function getCategoryWordCount(category) {
-    return categoryWords[category] ? categoryWords[category].length : 0;
-}
-
-// Console log voor debugging (kan later verwijderd worden)
+// Log statistieken bij laden
 console.log('📚 Categorie woordenlijsten geladen:');
-Object.keys(categoryWords).forEach(cat => {
-    console.log(`  - ${cat}: ${categoryWords[cat].length} woorden`);
-});
+for (const [category, words] of Object.entries(categoryWords)) {
+    console.log(`  - ${category}: ${words.size} woorden`);
+}
